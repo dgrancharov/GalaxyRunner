@@ -1,0 +1,5 @@
+/home/ddd/softuni/fundamental_level/OOP/teamwork_project/Galaxy_Runner/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/home/ddd/softuni/fundamental_level/OOP/teamwork_project/Galaxy_Runner/bin/Debug/Galaxy_Runner.exe.mdb
+/home/ddd/softuni/fundamental_level/OOP/teamwork_project/Galaxy_Runner/bin/Debug/Galaxy_Runner.exe
+/home/ddd/softuni/fundamental_level/OOP/teamwork_project/Galaxy_Runner/obj/x86/Debug/Galaxy_Runner.exe
+/home/ddd/softuni/fundamental_level/OOP/teamwork_project/Galaxy_Runner/obj/x86/Debug/Galaxy_Runner.exe.mdb
