@@ -2,9 +2,9 @@
 
 namespace Galaxy_Runner
 {
-	public class ShipCommands
+	public class Penalties : Item
 	{
-		public ShipCommands ()
+		public Penalties ()
 		{
 		}
 	}
