@@ -8,8 +8,6 @@ namespace Galaxy_Runner
 		// double Fuel { get; set; }
 
 		void Collide(Obstacle obstacle);
-
-		string ToString ();
 	}
 }
 

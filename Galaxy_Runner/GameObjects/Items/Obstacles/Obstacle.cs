@@ -2,9 +2,9 @@
 
 namespace Galaxy_Runner
 {
-	public class Obstacle : Item
+	public abstract class Obstacle : Item
 	{
-		public Obstacle (Position position, int size, char obstacleSymbol)
+		protected Obstacle (Position position, int size, char obstacleSymbol)
 			: base (position, size, obstacleSymbol)
 		{
 		}
@@ -14,6 +14,8 @@ namespace Galaxy_Runner
 			// ToDo
 			return string.Format("Obstacle");
 		}
+
+        public abstract override char[,] ToPrintArray();
 	}
 }
 

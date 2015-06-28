@@ -49,7 +49,8 @@ namespace Galaxy_Runner
 			throw new NotImplementedException ();
 		}
 
-		public override abstract string ToString();
+        public abstract override char[,] ToPrintArray();
+	
 	}
 }
 

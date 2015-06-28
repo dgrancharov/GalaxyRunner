@@ -11,6 +11,8 @@ namespace Galaxy_Runner
 		{
 			
 		}
+
+        public abstract override char[,] ToPrintArray();
 	}
 }
 

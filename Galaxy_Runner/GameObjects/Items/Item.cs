@@ -15,6 +15,8 @@ namespace Galaxy_Runner
 		public char ItemSymbol { get; set; }
 
 		public abstract override string ToString();
+
+        public abstract override char[,] ToPrintArray();
 	}
 }
 

@@ -10,6 +10,8 @@ namespace Galaxy_Runner
 			: base (position, PenaltySize, penaltySymbol)
 		{
 		}
+
+        public abstract override char[,] ToPrintArray();
 	}
 }
 

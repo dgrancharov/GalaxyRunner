@@ -2,7 +2,7 @@
 
 namespace Galaxy_Runner
 {
-	public class GameObject
+	public abstract class GameObject
 	{
 		private Position position;
 
@@ -24,6 +24,8 @@ namespace Galaxy_Runner
 				this.position = value;
 			}
 		}
+
+        public abstract char[,] ToPrintArray();
 	}
 }
 

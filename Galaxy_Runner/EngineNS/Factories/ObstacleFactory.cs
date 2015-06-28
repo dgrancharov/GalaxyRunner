@@ -1,4 +1,5 @@
 ﻿using System;
+using Galaxy_Runner.GameObjects.Items.Obstacles;
 
 namespace Galaxy_Runner
 {
@@ -34,7 +35,7 @@ namespace Galaxy_Runner
 				throw new IndexOutOfRangeException ();
 			}
 			
-			return new Obstacle (position, size, symbol);
+			return new SquareObstacle (position, size, symbol);
 		}
 	}
 }

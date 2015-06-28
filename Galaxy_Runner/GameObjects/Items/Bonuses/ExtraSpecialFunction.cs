@@ -7,6 +7,11 @@ namespace Galaxy_Runner
 		public ExtraSpecialFunction ()
 		{
 		}
+
+        public char[,] ToPrintArray()
+        {
+            throw new NotImplementedException();
+        }
 	}
 }
 

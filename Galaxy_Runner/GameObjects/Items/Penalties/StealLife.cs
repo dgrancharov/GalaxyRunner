@@ -7,6 +7,11 @@ namespace Galaxy_Runner
 		public StealLife ()
 		{
 		}
+
+        public char[,] ToPrintArray()
+        {
+            throw new NotImplementedException();
+        }
 	}
 }
 

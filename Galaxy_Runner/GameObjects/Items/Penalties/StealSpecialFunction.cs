@@ -7,6 +7,11 @@ namespace Galaxy_Runner
 		public StealSpecialFunction ()
 		{
 		}
+
+        public char[,] ToPrintArray()
+        {
+            throw new NotImplementedException();
+        }
 	}
 }
 

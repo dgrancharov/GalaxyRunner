@@ -12,15 +12,21 @@ namespace Galaxy_Runner
 
 		public override string ToString ()
 		{
-			StringBuilder shipForm = new StringBuilder ();
-
-			shipForm.AppendLine ("====");
-			shipForm.AppendLine (" 888==\\");
-			shipForm.AppendLine (" 888==/");
-			shipForm.AppendLine ("====");
-
-			return shipForm.ToString ();
+			return this.Lives.ToString ();
 		}
+
+        public override char[,] ToPrintArray()
+        {
+            char[,] tmpCharArray = new char[,]
+            { 
+                { '=','=','=','=',' ',' ',' ' },
+                { ' ','8','8','8','=','=','\\' },
+                { ' ','8','8','8','=','=','/' },
+                { '=','=','=','=',' ',' ',' ' }
+            };
+
+            return tmpCharArray;
+        }
 	}
 }
 

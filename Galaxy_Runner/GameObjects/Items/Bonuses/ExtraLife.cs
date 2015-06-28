@@ -7,6 +7,11 @@ namespace Galaxy_Runner
 		public ExtraLife ()
 		{
 		}
+
+        public char[,] ToPrintArray()
+        {
+            throw new NotImplementedException();
+        }
 	}
 }
 

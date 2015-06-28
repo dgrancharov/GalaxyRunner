@@ -24,12 +24,14 @@ namespace Galaxy_Runner
             this.ObstacleFactory = new ObstacleFactory();
             this.PenaltyFactory = new PenaltyFactory();
             this.BonusFactory = new BonusFactory();
+            this.Score = 0;
 		}
 
 		public bool IsRunning { get; private set; }
         public ObstacleFactory ObstacleFactory { get; private set; }
         public BonusFactory BonusFactory { get; private set; }
         public PenaltyFactory PenaltyFactory { get; private set; }
+        public int Score { get; set; }
 
 		public void Run()
 		{
@@ -37,18 +39,18 @@ namespace Galaxy_Runner
 
 			Map gameMap = new Map (height, width, renderer);
 
-			renderer.WriteLine ("Welcome to Galaxy Runner!\n\n");
+			this.renderer.WriteLine ("Welcome to Galaxy Runner!\n\n");
 			
-			renderer.WriteLine ("Use the Up and Down keys to play.");
-			renderer.WriteLine ("Avoid the rocks!\n\n");
-
-			renderer.WriteLine ("Choose ship type:");
-			renderer.WriteLine ("1.Scooter - small and fast");
-			renderer.WriteLine ("\t Special function - jump escape");
-			renderer.WriteLine ("2.Catamaran - medium sized");
-			renderer.WriteLine ("\t Special function - squeeze through");
-			renderer.WriteLine ("3.Battlecruiser - big and heavy");
-			renderer.WriteLine ("\t Special function - purge everything");
+			this.renderer.WriteLine ("Use the Up and Down keys to play.");
+			this.renderer.WriteLine ("Avoid the rocks!\n\n");
+            
+			this.renderer.WriteLine ("Choose ship type:");
+			this.renderer.WriteLine ("1.Scooter - small and fast");
+			this.renderer.WriteLine ("\t Special function - jump escape");
+			this.renderer.WriteLine ("2.Catamaran - medium sized");
+			this.renderer.WriteLine ("\t Special function - squeeze through");
+			this.renderer.WriteLine ("3.Battlecruiser - big and heavy");
+			this.renderer.WriteLine ("\t Special function - purge everything");
 
 			string choiceOfShip = GetShipType ();
 
@@ -56,16 +58,20 @@ namespace Galaxy_Runner
 
 			gameObjects.Add ((GameObject) playerShip);
 
-
+            //foreach (GameObject go in gameObjects)
+            //{
+            //    this.renderer.WriteLine(go.Position.X.ToString());
+            //    this.renderer.WriteLine(go.Position.Y.ToString());
+            //}
 
 			while (this.IsRunning) 
 			{
 				this.IsRunning = true;
 
 				gameMap.UpdateMap (gameObjects);
-
+                
 				this.IsRunning = false;
-			}
+            }
 
 
 

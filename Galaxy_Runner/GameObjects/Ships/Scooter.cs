@@ -12,13 +12,19 @@ namespace Galaxy_Runner
 
 		public override string ToString ()
 		{
-			StringBuilder shipForm = new StringBuilder ();
-
-			shipForm.AppendLine (" __  ");
-			shipForm.AppendLine ("X__O>");
-
-			return shipForm.ToString ();
+			return this.Lives.ToString ();
 		}
+        
+        public override char[,] ToPrintArray()
+        {
+            char[,] tmpCharArray = new char[,]
+            { 
+                { ' ','_','_',' ',' ' },
+                { 'X','_','_','O','>' }
+            };
+
+            return tmpCharArray;
+        }
 	}
 }
 
