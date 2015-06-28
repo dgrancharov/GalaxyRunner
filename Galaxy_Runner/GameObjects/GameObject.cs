@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Galaxy_Runner
+namespace Galaxy_Runner.GameObjects
 {
 	public abstract class GameObject
 	{

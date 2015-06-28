@@ -1,6 +1,7 @@
 ﻿using System;
+using Galaxy_Runner.Interfaces;
 
-namespace Galaxy_Runner
+namespace Galaxy_Runner.GameObjects.Items
 {
 	public abstract class Item : GameObject, IItem
 	{

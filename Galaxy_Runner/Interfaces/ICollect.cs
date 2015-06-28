@@ -1,6 +1,7 @@
 ﻿using System;
+using Galaxy_Runner.GameObjects.Items;
 
-namespace Galaxy_Runner
+namespace Galaxy_Runner.Interfaces
 {
 	using System.Collections.Generic;
 

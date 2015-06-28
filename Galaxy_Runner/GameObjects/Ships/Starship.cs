@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Galaxy_Runner.Interfaces;
+using Galaxy_Runner.GameObjects.Items;
+using Galaxy_Runner.GameObjects.Items.Obstacles;
 
-namespace Galaxy_Runner
+namespace Galaxy_Runner.GameObjects.Ships
 {
 	public abstract class Starship : GameObject , IStarship, IDestroyable, ICollect, IShoot
 	{

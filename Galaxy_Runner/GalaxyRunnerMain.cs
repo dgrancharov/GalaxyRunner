@@ -1,4 +1,7 @@
 ﻿using System;
+using Galaxy_Runner.EngineNS;
+using Galaxy_Runner.UI;
+using Galaxy_Runner.Interfaces;
 
 namespace Galaxy_Runner
 {

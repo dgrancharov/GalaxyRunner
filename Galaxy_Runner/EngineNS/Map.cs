@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Galaxy_Runner.Interfaces;
+using Galaxy_Runner.GameObjects;
 
-namespace Galaxy_Runner
+namespace Galaxy_Runner.EngineNS
 {
     public class Map
     {
@@ -27,7 +29,7 @@ namespace Galaxy_Runner
             {
                 for (int col = 0; col < Width; col++)
                 {
-                    if (DataMap[row, col] == ' ')
+                    if (DataMap[row, col] == '.')
                     {
                         foreach (GameObject gameObject in gameObjects)
                         {
@@ -63,7 +65,7 @@ namespace Galaxy_Runner
             {
                 for (int col = 0; col < Width; col++)
                 {
-                    map[row, col] = ' ';
+                    map[row, col] = '.';
                 }
             }
 

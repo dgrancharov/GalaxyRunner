@@ -1,7 +1,8 @@
 ﻿using System;
 using Galaxy_Runner.GameObjects.Items.Obstacles;
+using Galaxy_Runner.Interfaces;
 
-namespace Galaxy_Runner
+namespace Galaxy_Runner.EngineNS.Factories
 {
 	
 	public class ObstacleFactory

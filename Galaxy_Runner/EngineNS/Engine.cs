@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using Galaxy_Runner.Interfaces;
+using Galaxy_Runner.GameObjects;
+using Galaxy_Runner.EngineNS.Factories;
+using Galaxy_Runner.GameObjects.Ships;
 
-namespace Galaxy_Runner
+namespace Galaxy_Runner.EngineNS
 {
 	public class Engine
 	{
 		public const int height = 30;
-		public const int width = 90;
+		public const int width = 120;
 
 		private static readonly Random Rand = new Random ();
 

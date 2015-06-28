@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Galaxy_Runner
+namespace Galaxy_Runner.GameObjects.Ships
 {
 	public class BattleCruiser : Starship
 	{
