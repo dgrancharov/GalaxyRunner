@@ -2,35 +2,19 @@
 
 namespace Galaxy_Runner
 {
-	public abstract class Item : IItem
+	public abstract class Item : GameObject, IItem
 	{
-		protected Item ()
+		protected Item (Position position, int size, char itemSymbol)
+			: base (position)
 		{
+			this.Size = size;
+			this.ItemSymbol = itemSymbol;
 		}
 
-		public int Size 
-		{
-			get 
-			{
-				throw new NotImplementedException ();
-			}
-			set 
-			{
-				throw new NotImplementedException ();
-			}
-		}
+		public int Size { get; set; }
+		public char ItemSymbol { get; set; }
 
-		public char Symbol 
-		{
-			get 
-			{
-				throw new NotImplementedException ();
-			}
-			set 
-			{
-				throw new NotImplementedException ();
-			}
-		}
+		public abstract override string ToString();
 	}
 }
 

@@ -5,8 +5,8 @@ namespace Galaxy_Runner
 {
 	public class Scooter : Starship
 	{
-		public Scooter (string name, Position position)
-			: base(name, position)
+		public Scooter (Position position)
+			: base(position)
 		{
 		}
 

@@ -5,27 +5,13 @@ namespace Galaxy_Runner
 {
 	public abstract class Starship : GameObject , IStarship, IDestroyable, ICollect, IShoot
 	{
-		private string name;
 		private int lives = 3;
 		private List<Item> inventory;
 
-		protected Starship (string name, Position position)
+		protected Starship (Position position)
 			: base (position)
 		{
-			this.Name = name;
 			inventory = new List<Item> ();
-		}
-
-		public string Name {
-			get 
-			{
-				return this.name;
-			}
-			set 
-			{
-				// validate
-				this.name = value;
-			}
 		}
 
 		public int Lives {

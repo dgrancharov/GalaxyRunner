@@ -5,8 +5,8 @@ namespace Galaxy_Runner
 {
 	public class Catamaran : Starship
 	{
-		public Catamaran (string name, Position position)
-			: base (name, position)
+		public Catamaran (Position position)
+			: base (position)
 		{
 		}
 

@@ -2,20 +2,14 @@
 
 namespace Galaxy_Runner
 {
-	public class Bonuses : Item
+	public abstract class Bonus : Item
 	{
 		private const int BonusSize = 1;
 
-		public Bonuses (Position position, int size, char bonusSymbol)
-			: base (position, BonusSize, BonusSymbol)
+		public Bonus (Position position, int size, char bonusSymbol)
+			: base (position, BonusSize, bonusSymbol)
 		{
 			
-		}
-
-		public override string ToString ()
-		{
-			// ToDo
-			return string.Format ("[Bonuses]");
 		}
 	}
 }

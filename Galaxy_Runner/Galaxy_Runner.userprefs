@@ -1,22 +1,15 @@
 ﻿<Properties StartupItem="Galaxy_Runner.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GalaxyRunnerMain.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="EngineNS/Map.cs">
     <Files>
-      <File FileName="GameObjects/GameObject.cs" Line="1" Column="1" />
-      <File FileName="Interfaces/IDestroyable.cs" Line="1" Column="1" />
-      <File FileName="GameObjects/Items/Item.cs" Line="1" Column="1" />
-      <File FileName="Interfaces/IItem.cs" Line="1" Column="1" />
-      <File FileName="GameObjects/Items/Obstacle.cs" Line="1" Column="1" />
-      <File FileName="GameObjects/Items/Penalties.cs" Line="1" Column="1" />
-      <File FileName="GameObjects/Items/Bonuses.cs" Line="1" Column="1" />
-      <File FileName="Interfaces/IStarship.cs" Line="1" Column="1" />
+      <File FileName="EngineNS/Engine.cs" Line="1" Column="1" />
       <File FileName="GameObjects/Ships/Starship.cs" Line="1" Column="1" />
-      <File FileName="Engine/Factories/BonusFactory.cs" Line="1" Column="1" />
-      <File FileName="Engine/Factories/PenaltyFactory.cs" Line="1" Column="1" />
+      <File FileName="GameObjects/GameObject.cs" Line="1" Column="1" />
+      <File FileName="Position.cs" Line="1" Column="1" />
+      <File FileName="EngineNS/Map.cs" Line="43" Column="22" />
       <File FileName="GameObjects/Ships/Scooter.cs" Line="1" Column="1" />
-      <File FileName="GameObjects/Ships/Catamaran.cs" Line="1" Column="1" />
-      <File FileName="GameObjects/Ships/BattleCruiser.cs" Line="1" Column="1" />
-      <File FileName="GalaxyRunnerMain.cs" Line="20" Column="40" />
+      <File FileName="UI/ConsoleRenderer.cs" Line="17" Column="4" />
+      <File FileName="Interfaces/IRenderer.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

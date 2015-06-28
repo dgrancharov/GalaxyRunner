@@ -12,7 +12,6 @@ namespace Galaxy_Runner
 		}
 
 		public int X { get; set; }
-
 		public int Y { get; set; }
 	}
 }

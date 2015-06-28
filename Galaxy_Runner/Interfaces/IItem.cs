@@ -6,7 +6,7 @@ namespace Galaxy_Runner
 	{
 		int Size { get; set; }
 
-		char Symbol { get; set; }
+		char ItemSymbol { get; set; }
 
 		string ToString();
 	}

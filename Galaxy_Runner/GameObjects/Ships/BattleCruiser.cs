@@ -5,8 +5,8 @@ namespace Galaxy_Runner
 {
 	public class BattleCruiser : Starship
 	{
-		public BattleCruiser (string name, Position position)
-			: base(name, position)
+		public BattleCruiser (Position position)
+			: base(position)
 		{
 		}
 

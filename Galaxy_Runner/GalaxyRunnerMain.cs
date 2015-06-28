@@ -6,18 +6,23 @@ namespace Galaxy_Runner
 	{
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Welcome to Galaxy Runner!");
+			IInputReader reader = new ConsoleInputReader ();
+			IRenderer renderer = new ConsoleRenderer ();
 
-			Scooter scooter = new Scooter ("Scooter 1", new Position (0, 0));
-			Console.WriteLine (scooter);
+			Engine engine = new Engine (reader, renderer);
 
-			Catamaran catamaran = new Catamaran ("Catamaran 1", new Position (8, 0));
-			Console.WriteLine (catamaran);
+			engine.Run ();
 
-			BattleCruiser battleCruiser = new BattleCruiser ("BattleCruiser", new Position (16, 0));
-			Console.WriteLine (battleCruiser);
-
-			Console.WriteLine ("Game begins ...");
+//			Scooter scooter = new Scooter ("Scooter 1", new Position (0));
+//			Console.WriteLine (scooter);
+//
+//			Catamaran catamaran = new Catamaran ("Catamaran 1", new Position (8));
+//			Console.WriteLine (catamaran);
+//
+//			BattleCruiser battleCruiser = new BattleCruiser ("BattleCruiser", new Position (16));
+//			Console.WriteLine (battleCruiser);
+//
+//			Console.WriteLine ("Game begins ...");
 		}
 	}
 }

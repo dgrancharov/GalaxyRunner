@@ -36,8 +36,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GalaxyRunnerMain.cs" />
     <Compile Include="GameObjects\Ships\Starship.cs" />
-    <Compile Include="Engine\Factories\ShipFactory.cs" />
-    <Compile Include="Engine\Factories\ObstacleFactory.cs" />
     <Compile Include="Interfaces\IStarship.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="UI\ConsoleInputReader.cs" />
@@ -45,29 +43,41 @@
     <Compile Include="Interfaces\IDestroyable.cs" />
     <Compile Include="Interfaces\IShoot.cs" />
     <Compile Include="Interfaces\ICollect.cs" />
-    <Compile Include="GameObjects\Items\Bonuses.cs" />
-    <Compile Include="GameObjects\Items\Penalties.cs" />
     <Compile Include="GameObjects\Ships\Catamaran.cs" />
     <Compile Include="GameObjects\Ships\Scooter.cs" />
     <Compile Include="GameObjects\Ships\BattleCruiser.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Items\Item.cs" />
     <Compile Include="Interfaces\IItem.cs" />
-    <Compile Include="GameObjects\Items\Obstacle.cs" />
-    <Compile Include="Engine\Factories\BonusFactory.cs" />
-    <Compile Include="Engine\Factories\PenaltyFactory.cs" />
+    <Compile Include="GameObjects\Items\Bonuses\Bonus.cs" />
+    <Compile Include="GameObjects\Items\Bonuses\ExtraLife.cs" />
+    <Compile Include="GameObjects\Items\Bonuses\ExtraSpecialFunction.cs" />
+    <Compile Include="GameObjects\Items\Obstacles\Obstacle.cs" />
+    <Compile Include="GameObjects\Items\Penalties\StealLife.cs" />
+    <Compile Include="GameObjects\Items\Penalties\StealSpecialFunction.cs" />
+    <Compile Include="GameObjects\Items\Penalties\Penalty.cs" />
+    <Compile Include="Interfaces\IInputReader.cs" />
+    <Compile Include="Interfaces\IRenderer.cs" />
+    <Compile Include="EngineNS\Factories\ObstacleFactory.cs" />
+    <Compile Include="EngineNS\Factories\BonusFactory.cs" />
+    <Compile Include="EngineNS\Factories\PenaltyFactory.cs" />
+    <Compile Include="EngineNS\Commands\UserCommands.cs" />
+    <Compile Include="EngineNS\Engine.cs" />
+    <Compile Include="EngineNS\Map.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Interfaces\" />
     <Folder Include="GameObjects\" />
-    <Folder Include="Engine\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Engine\Commands\" />
-    <Folder Include="Engine\Factories\" />
-    <Folder Include="Engine\MapGenerator\" />
     <Folder Include="GameObjects\Ships\" />
     <Folder Include="UI\" />
     <Folder Include="GameObjects\Items\" />
+    <Folder Include="GameObjects\Items\Bonuses\" />
+    <Folder Include="GameObjects\Items\Obstacles\" />
+    <Folder Include="GameObjects\Items\Penalties\" />
+    <Folder Include="EngineNS\" />
+    <Folder Include="EngineNS\Commands\" />
+    <Folder Include="EngineNS\Factories\" />
   </ItemGroup>
 </Project>
