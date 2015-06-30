@@ -11,6 +11,8 @@ namespace Galaxy_Runner.Interfaces
 		void WriteLine (string message, params object[] parameters);
 
 		void WriteLine ();
+
+        void Clear();
 	}
 }
 

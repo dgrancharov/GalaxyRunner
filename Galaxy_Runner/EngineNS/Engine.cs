@@ -101,7 +101,7 @@ namespace Galaxy_Runner.EngineNS
                 this.IsRunning = true;
                 if (!isPause)
                 {
-                    gameMap.UpdateMap(gameObjects);
+                    gameMap.UpdateMap(gameObjects, playerShip);
                 }
                 this.reader.IsKeyPressed();
 

@@ -33,6 +33,11 @@ namespace Galaxy_Runner.UI
 			Console.SetBufferSize (121, 30);
 			Console.WriteLine();
 		}
+
+        public void Clear()
+        {
+            Console.Clear();
+        }
 	}
 }
 

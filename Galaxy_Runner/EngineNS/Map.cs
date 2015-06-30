@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Galaxy_Runner.Interfaces;
 using Galaxy_Runner.GameObjects;
+using Galaxy_Runner.GameObjects.Ships;
 
 namespace Galaxy_Runner.EngineNS
 {
@@ -14,27 +15,36 @@ namespace Galaxy_Runner.EngineNS
         {
             this.Height = height;
             this.Width = width;
+            this.WideWidth = this.Width + 20;
             this.Renderer = renderer;
-            this.DataMap = MapInit(new char[Height, Width + 10]);
+            this.DataMap = MapInit(new char[Height, WideWidth]);
         }
 
         public int Height { get; private set; }
         public int Width { get; private set; }
+        public int WideWidth { get; private set; }
         public IRenderer Renderer { get; private set; }
         public char[,] DataMap { get; private set; }
 
-        public void UpdateMap(IList<GameObject> gameObjects)
+        public void UpdateMap(IList<GameObject> gameObjects, Starship playerShip)
         {
             for (int row = 0; row < Height; row++)
             {
-                for (int col = 0; col < Width; col++)
+                for (int col = 0; col < WideWidth; col++)
                 {
-                    DataMap[row, col] = DataMap[row, col+1];
+                    if(col != WideWidth - 1)
+                    {
+                        DataMap[row, col] = DataMap[row, col + 1];
+                    }
+                    else
+                    {
+                        DataMap[row, col] = 'C';
+                    }
                 }
             }
+            RetrieveShip(playerShip);
 
-
-
+            this.Renderer.Clear();
             PrintMap(DataMap);
         }
 
@@ -54,9 +64,9 @@ namespace Galaxy_Runner.EngineNS
         {
             for (int row = 0; row < Height; row++)
             {
-                for (int col = 0; col < Width; col++)
+                for (int col = 0; col < WideWidth; col++)
                 {
-                    map[row, col] = '.';
+                    map[row, col] = ' ';
                 }
             }
 
@@ -74,25 +84,31 @@ namespace Galaxy_Runner.EngineNS
             }
         }
 
+        private void RetrieveShip(Starship playerShip)
+        {
+            for (int row = 0; row < playerShip.ToPrintArray().GetLength(0); row++)
+            {
+                for (int col = 0; col < playerShip.ToPrintArray().GetLength(1); col++)
+                {
+                    DataMap[row + playerShip.Position.Y, col + playerShip.Position.X] = playerShip.ToPrintArray()[row, col];
+                }
+            }
+        }
+
         public void PopulateMap(IList<GameObject> gameObjects)
         {
             for (int row = 0; row < Height; row++)
             {
-                for (int col = 0; col < Width; col++)
+                for (int col = 0; col < WideWidth; col++)
                 {
-                    if (DataMap[row, col] == '.')
+                    if ( gameObjects.Contains(gameObjects.FirstOrDefault(go => go.Position.X == col && go.Position.Y == row ) ) )
                     {
-                        foreach (GameObject gameObject in gameObjects)
-                        {
-                            if (gameObject.Position.X == col && gameObject.Position.Y == row)
-                            {
-                                InsertObjectInMap(gameObject);
-                            }
-                        }
+                        InsertObjectInMap(gameObjects.FirstOrDefault(go => go.Position.X == col && go.Position.Y == row ));
                     }
                 }
             }
             PrintMap(DataMap);
+            this.Renderer.Clear();
         }
     }
 }
