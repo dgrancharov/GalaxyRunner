@@ -1,11 +1,17 @@
 ﻿using System;
+using Galaxy_Runner.EngineNS.Commands;
+
 
 namespace Galaxy_Runner.Interfaces
 {
 	public interface IInputReader
 	{
-		string ReadLine();
+        event ClickEventHandler KeyPress;
 
-		ConsoleKeyInfo ReadKey();
+        string ReadLine();
+
+        ConsoleKeyInfo ReadKey();
+
+        void IsKeyPressed();
 	}
 }

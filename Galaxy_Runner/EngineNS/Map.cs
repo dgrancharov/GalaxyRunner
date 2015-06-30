@@ -15,7 +15,7 @@ namespace Galaxy_Runner.EngineNS
             this.Height = height;
             this.Width = width;
             this.Renderer = renderer;
-            this.DataMap = MapInit(new char[Height, Width]);
+            this.DataMap = MapInit(new char[Height, Width + 10]);
         }
 
         public int Height { get; private set; }
@@ -29,16 +29,7 @@ namespace Galaxy_Runner.EngineNS
             {
                 for (int col = 0; col < Width; col++)
                 {
-                    if (DataMap[row, col] == '.')
-                    {
-                        foreach (GameObject gameObject in gameObjects)
-                        {
-                            if(gameObject.Position.X == col && gameObject.Position.Y == row)
-                            {
-                                InsertObjectInMap(gameObject, DataMap);
-                            }
-                        }
-                    }
+                    DataMap[row, col] = DataMap[row, col+1];
                 }
             }
 
@@ -72,18 +63,36 @@ namespace Galaxy_Runner.EngineNS
             return map;
         }
 
-        private void InsertObjectInMap(GameObject gameObject, char[,] map)
+        private void InsertObjectInMap(GameObject gameObject)
         {
-//            Console.WriteLine("Debug\tMap: gameObject.ToPrintArray().GetLength(1) - {0}", gameObject.ToPrintArray().GetLength(1));
-//            Console.WriteLine("Debug\tMap: gameObject.ToPrintArray().GetLength(0) - {0}", gameObject.ToPrintArray().GetLength(0));
-
             for (int row = 0; row < gameObject.ToPrintArray().GetLength(0); row++)
             {
                 for (int col = 0; col < gameObject.ToPrintArray().GetLength(1) ; col++)
                 {
-                    map[row + gameObject.Position.Y, col + gameObject.Position.X] = gameObject.ToPrintArray()[row, col];
+                    DataMap[row + gameObject.Position.Y, col + gameObject.Position.X] = gameObject.ToPrintArray()[row, col];
                 }
             }
+        }
+
+        public void PopulateMap(IList<GameObject> gameObjects)
+        {
+            for (int row = 0; row < Height; row++)
+            {
+                for (int col = 0; col < Width; col++)
+                {
+                    if (DataMap[row, col] == '.')
+                    {
+                        foreach (GameObject gameObject in gameObjects)
+                        {
+                            if (gameObject.Position.X == col && gameObject.Position.Y == row)
+                            {
+                                InsertObjectInMap(gameObject);
+                            }
+                        }
+                    }
+                }
+            }
+            PrintMap(DataMap);
         }
     }
 }

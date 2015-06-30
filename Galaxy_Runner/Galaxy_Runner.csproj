@@ -33,6 +33,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EngineNS\Commands\ClickEventHandler.cs" />
+    <Compile Include="EngineNS\Commands\ProcessEventArgs.cs" />
     <Compile Include="GameObjects\Items\Obstacles\SquareObstacle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GalaxyRunnerMain.cs" />
@@ -62,7 +64,6 @@
     <Compile Include="EngineNS\Factories\ObstacleFactory.cs" />
     <Compile Include="EngineNS\Factories\BonusFactory.cs" />
     <Compile Include="EngineNS\Factories\PenaltyFactory.cs" />
-    <Compile Include="EngineNS\Commands\UserCommands.cs" />
     <Compile Include="EngineNS\Engine.cs" />
     <Compile Include="EngineNS\Map.cs" />
   </ItemGroup>

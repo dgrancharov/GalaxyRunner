@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Galaxy_Runner.Interfaces;
 using Galaxy_Runner.GameObjects;
 using Galaxy_Runner.EngineNS.Factories;
 using Galaxy_Runner.GameObjects.Ships;
+using Galaxy_Runner.EngineNS.Commands;
 
 namespace Galaxy_Runner.EngineNS
 {
@@ -12,6 +14,8 @@ namespace Galaxy_Runner.EngineNS
 	{
 		public const int height = 30;
 		public const int width = 120;
+        
+        private bool isPause = false;
 
 		private static readonly Random Rand = new Random ();
 
@@ -23,6 +27,7 @@ namespace Galaxy_Runner.EngineNS
 		public Engine (IInputReader reader, IRenderer renderer)
 		{
 			this.reader = reader;
+            this.AtachReaderEvents();
 			this.renderer = renderer;
 			this.gameObjects = new List<GameObject> ();
             this.ObstacleFactory = new ObstacleFactory();
@@ -36,6 +41,33 @@ namespace Galaxy_Runner.EngineNS
         public BonusFactory BonusFactory { get; private set; }
         public PenaltyFactory PenaltyFactory { get; private set; }
         public int Score { get; set; }
+
+        private void AtachReaderEvents()
+        {
+            this.reader.KeyPress += EventControler;
+        }
+
+        private void EventControler(object sender, ProcessEventArgs data)
+        {
+            switch (data.KeyPressed)
+            {
+                case ConsoleKey.LeftArrow:
+                    {
+                        //TODO
+                    }
+                    break;
+                case ConsoleKey.RightArrow:
+                    {
+                        //TODO
+                    }
+                    break;
+                case ConsoleKey.Spacebar:
+                    {
+                        this.isPause = !this.isPause;
+                    }
+                    break;
+            }
+        }
 
 		public void Run()
 		{
@@ -62,19 +94,18 @@ namespace Galaxy_Runner.EngineNS
 
 			gameObjects.Add ((GameObject) playerShip);
 
-            //foreach (GameObject go in gameObjects)
-            //{
-            //    this.renderer.WriteLine(go.Position.X.ToString());
-            //    this.renderer.WriteLine(go.Position.Y.ToString());
-            //}
+            gameMap.PopulateMap(gameObjects);
 
-			while (this.IsRunning) 
-			{
-				this.IsRunning = true;
+            while (this.IsRunning)
+            {
+                this.IsRunning = true;
+                if (!isPause)
+                {
+                    gameMap.UpdateMap(gameObjects);
+                }
+                this.reader.IsKeyPressed();
 
-				gameMap.UpdateMap (gameObjects);
-                
-				this.IsRunning = false;
+                // this.IsRunning = false;
             }
 
 

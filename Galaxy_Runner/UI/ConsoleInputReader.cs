@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using Galaxy_Runner.EngineNS.Commands;
 using Galaxy_Runner.Interfaces;
 
 namespace Galaxy_Runner.UI
@@ -8,6 +10,8 @@ namespace Galaxy_Runner.UI
 		public ConsoleInputReader ()
 		{
 		}
+
+        public event ClickEventHandler KeyPress;
 
 		public string ReadLine()
 		{
@@ -20,6 +24,21 @@ namespace Galaxy_Runner.UI
 			ConsoleKeyInfo cki = Console.ReadKey ();
 			return cki;
 		}
+
+        public void IsKeyPressed()
+        {
+            if (Console.KeyAvailable)
+            {
+                var keyPressed = this.ReadKey();
+                if (keyPressed.Key == ConsoleKey.LeftArrow || keyPressed.Key == ConsoleKey.RightArrow || keyPressed.Key == ConsoleKey.Spacebar)
+                {
+                    if (this.KeyPress != null)
+                    {
+                        this.KeyPress(this, new ProcessEventArgs(keyPressed.Key));
+                    }
+                }
+            }
+        }
 	}
 }
 
