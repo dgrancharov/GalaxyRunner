@@ -10,6 +10,14 @@ namespace Galaxy_Runner.GameObjects.Ships
 		{
 		}
 
+        public override void UpdatePosition()
+        {
+            int tmpPositionX = this.Position.X;
+            int tmpPositionY = this.Position.Y;
+
+            this.Position = new Position(tmpPositionX - 1, tmpPositionY);
+        }
+
 		public override string ToString ()
 		{
 			return this.Lives.ToString ();

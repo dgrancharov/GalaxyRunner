@@ -12,8 +12,9 @@ namespace Galaxy_Runner.EngineNS
 {
 	public class Engine
 	{
-		public const int height = 30;
-		public const int width = 120;
+		public const int height = 33;
+		public const int width = 150;
+        public const int reducedWidth = 120;
         
         private bool isPause = false;
 
@@ -34,13 +35,17 @@ namespace Galaxy_Runner.EngineNS
             this.PenaltyFactory = new PenaltyFactory();
             this.BonusFactory = new BonusFactory();
             this.Score = 0;
+            this.Level = 1;
+            this.Iterations = 0;
 		}
 
+        private int Iterations { get; set; }
 		public bool IsRunning { get; private set; }
         public ObstacleFactory ObstacleFactory { get; private set; }
         public BonusFactory BonusFactory { get; private set; }
         public PenaltyFactory PenaltyFactory { get; private set; }
         public int Score { get; set; }
+        public int Level { get; set; }
 
         private void AtachReaderEvents()
         {
@@ -73,26 +78,28 @@ namespace Galaxy_Runner.EngineNS
 		{
 			this.IsRunning = true;
 
-			Map gameMap = new Map (height, width, renderer);
+			Map gameMap = new Map (height, width, reducedWidth, renderer);
 
-			this.renderer.WriteLine ("Welcome to Galaxy Runner!\n\n");
-			
-			this.renderer.WriteLine ("Use the Up and Down keys to play.");
-			this.renderer.WriteLine ("Avoid the rocks!\n\n");
-            
-			this.renderer.WriteLine ("Choose ship type:");
-			this.renderer.WriteLine ("1.Scooter - small and fast");
-			this.renderer.WriteLine ("\t Special function - jump escape");
-			this.renderer.WriteLine ("2.Catamaran - medium sized");
-			this.renderer.WriteLine ("\t Special function - squeeze through");
-			this.renderer.WriteLine ("3.Battlecruiser - big and heavy");
-			this.renderer.WriteLine ("\t Special function - purge everything");
+			this.renderer.WriteLine ("White","Welcome to Galaxy Runner!\n\n");
+
+            this.renderer.WriteLine ("White", "Use the Up and Down keys to play.");
+            this.renderer.WriteLine ("White", "Avoid the rocks!\n\n");
+
+            this.renderer.WriteLine ("White", "Choose ship type:");
+            this.renderer.WriteLine ("White", "1.Scooter - small and fast");
+            this.renderer.WriteLine ("White", "\t Special function - jump escape");
+            this.renderer.WriteLine ("White", "2.Catamaran - medium sized");
+            this.renderer.WriteLine ("White", "\t Special function - squeeze through");
+            this.renderer.WriteLine ("White", "3.Battlecruiser - big and heavy");
+            this.renderer.WriteLine ("White", "\t Special function - purge everything");
 
 			string choiceOfShip = GetShipType ();
 
 			Starship playerShip = InstantiatePlayerShip (choiceOfShip);
 
 			gameObjects.Add ((GameObject) playerShip);
+
+            CreateObstacles(3);
 
             gameMap.PopulateMap(gameObjects);
 
@@ -104,8 +111,15 @@ namespace Galaxy_Runner.EngineNS
                     gameMap.UpdateMap(gameObjects, playerShip);
                 }
                 this.reader.IsKeyPressed();
+                
+                if(this.Iterations % (width - reducedWidth) == 0)
+                {
+                    CreateObstacles(Level);
+                }
 
-                // this.IsRunning = false;
+                this.Score += 3;
+                this.Level = this.Score / 30 + 1;
+                this.Iterations++;
             }
 
 
@@ -119,7 +133,7 @@ namespace Galaxy_Runner.EngineNS
 			string[] validChoices = { "1", "2", "3" };
 
 			while (!validChoices.Contains (choiceOfShip)) {
-				this.renderer.WriteLine ("Invalid choice of shiptype, please re-enter.");
+                this.renderer.WriteLine("White", "Invalid choice of shiptype, please re-enter.");
 				choiceOfShip = this.reader.ReadLine ();
 			}
 			return choiceOfShip;
@@ -145,6 +159,34 @@ namespace Galaxy_Runner.EngineNS
 
 			return playerShip;
 		}
+        
+        public void CreateObstacles(int Level)
+        {
+            for (int i = 0; i< 10; i++)
+            {
+                IItem newObstacle = this.ObstacleFactory.CreateObstacle(GetRandomPosition(Level), Level, Rand);
+                gameObjects.Add((GameObject) newObstacle);
+            }
+        }
+
+        public Position GetRandomPosition(int Level)
+        {
+            int x = GetRandomX(Level);
+            int y = GetRandomY();
+            Position newPosition = new Position(x, y);
+
+            return newPosition;
+        }
+        
+        public static int GetRandomX(int Level)
+        {
+            return Rand.Next(reducedWidth, width - Level);
+        }
+       
+        public static int GetRandomY()
+        {
+            return Rand.Next(0, height);
+        }
 	}
 }
 

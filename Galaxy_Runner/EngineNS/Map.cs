@@ -11,18 +11,18 @@ namespace Galaxy_Runner.EngineNS
     {
         Random Rand = new Random();
 
-        public Map(int height, int width, IRenderer renderer)
+        public Map(int height, int width, int reducedWidth, IRenderer renderer)
         {
             this.Height = height;
             this.Width = width;
-            this.WideWidth = this.Width + 20;
+            this.ReducedWidth = reducedWidth;
             this.Renderer = renderer;
-            this.DataMap = MapInit(new char[Height, WideWidth]);
+            this.DataMap = MapInit(new char[Height, Width]);
         }
 
         public int Height { get; private set; }
         public int Width { get; private set; }
-        public int WideWidth { get; private set; }
+        public int ReducedWidth { get; set; }
         public IRenderer Renderer { get; private set; }
         public char[,] DataMap { get; private set; }
 
@@ -30,15 +30,15 @@ namespace Galaxy_Runner.EngineNS
         {
             for (int row = 0; row < Height; row++)
             {
-                for (int col = 0; col < WideWidth; col++)
+                for (int col = 0; col < Width; col++)
                 {
-                    if(col != WideWidth - 1)
+                    if(col != Width - 1)
                     {
                         DataMap[row, col] = DataMap[row, col + 1];
                     }
                     else
                     {
-                        DataMap[row, col] = 'C';
+                        DataMap[row, col] = ' ';
                     }
                 }
             }
@@ -52,9 +52,9 @@ namespace Galaxy_Runner.EngineNS
         {
             for (int row = 0; row < Height; row++)
             {
-                for (int col = 0; col < Width; col++)
+                for (int col = 0; col < ReducedWidth; col++)
                 {
-                    this.Renderer.Write(map[row, col]);
+                    this.Renderer.Write("Green", map[row, col]);
                 }
                 this.Renderer.WriteLine();
             }
@@ -64,7 +64,7 @@ namespace Galaxy_Runner.EngineNS
         {
             for (int row = 0; row < Height; row++)
             {
-                for (int col = 0; col < WideWidth; col++)
+                for (int col = 0; col < Width; col++)
                 {
                     map[row, col] = ' ';
                 }
@@ -99,7 +99,7 @@ namespace Galaxy_Runner.EngineNS
         {
             for (int row = 0; row < Height; row++)
             {
-                for (int col = 0; col < WideWidth; col++)
+                for (int col = 0; col < Width; col++)
                 {
                     if ( gameObjects.Contains(gameObjects.FirstOrDefault(go => go.Position.X == col && go.Position.Y == row ) ) )
                     {

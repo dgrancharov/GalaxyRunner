@@ -7,17 +7,16 @@ namespace Galaxy_Runner.EngineNS.Factories
 	
 	public class ObstacleFactory
 	{
-		Random rnd = new Random();
-
 		public ObstacleFactory ()
 		{
+
 		}
 
-		public IItem CreateObstacle(Position position, int size)
+		public IItem CreateObstacle(Position position, int size, Random rand)
 		{
 			char symbol;
-			int randNumber = rnd.Next(4);
-
+			int randNumber = rand.Next(4);
+            
 			switch (randNumber) 
 			{
 			case 0:
