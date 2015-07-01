@@ -11,8 +11,8 @@ namespace Galaxy_Runner.UI
             Console.BackgroundColor = ConsoleColor.Black;
             Type type = typeof(ConsoleColor);
             Console.ForegroundColor = (ConsoleColor)Enum.Parse(type, foreGroundColor);
-            Console.SetWindowSize(Galaxy_Runner.EngineNS.Engine.reducedWidth + 1, Galaxy_Runner.EngineNS.Engine.height);
-            //          Console.SetBufferSize (Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
+            Console.SetWindowSize(Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
+            Console.SetBufferSize (Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
 			Console.Write(message, parameters);
 		}
 
@@ -21,8 +21,8 @@ namespace Galaxy_Runner.UI
             Console.BackgroundColor = ConsoleColor.Black;
             Type type = typeof(ConsoleColor);
             Console.ForegroundColor = (ConsoleColor)Enum.Parse(type, foreGroundColor);
-            Console.SetWindowSize(Galaxy_Runner.EngineNS.Engine.reducedWidth + 1, Galaxy_Runner.EngineNS.Engine.height);
-            //			Console.SetBufferSize (Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
+            Console.SetWindowSize(Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
+            Console.SetBufferSize (Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
 			Console.Write(s);
 		}
 
@@ -31,18 +31,23 @@ namespace Galaxy_Runner.UI
             Console.BackgroundColor = ConsoleColor.Black;
             Type type = typeof(ConsoleColor);
             Console.ForegroundColor = (ConsoleColor)Enum.Parse(type, foreGroundColor);
-            Console.SetWindowSize(Galaxy_Runner.EngineNS.Engine.reducedWidth + 1, Galaxy_Runner.EngineNS.Engine.height);
-            //			Console.SetBufferSize (Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
+            Console.SetWindowSize(Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
+            Console.SetBufferSize (Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
 			Console.WriteLine(message, parameters);
 		}
 
 		public void WriteLine()
 		{
             Console.BackgroundColor = ConsoleColor.Black;
-            Console.SetWindowSize(Galaxy_Runner.EngineNS.Engine.reducedWidth + 1, Galaxy_Runner.EngineNS.Engine.height);
-            //			Console.SetBufferSize (Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
+            Console.SetWindowSize(Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
+            Console.SetBufferSize (Galaxy_Runner.EngineNS.Engine.width + 1, Galaxy_Runner.EngineNS.Engine.height);
 			Console.WriteLine();
 		}
+
+        public void SetCursor(int x, int y)
+        {
+            Console.SetCursorPosition(x, y);
+        }
 
         public void Clear()
         {

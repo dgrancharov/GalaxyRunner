@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using Galaxy_Runner.Interfaces;
 using Galaxy_Runner.GameObjects;
 using Galaxy_Runner.EngineNS.Factories;
@@ -14,8 +15,8 @@ namespace Galaxy_Runner.EngineNS
 	public class Engine
 	{
 		public const int height = 33;
-		public const int width = 150;
-        public const int reducedWidth = 120;
+		public const int width = 120;
+        public const int reducedWidth = 100;
         public const int obstacleMaxSize = 7;
         
         private bool isPause = false;
@@ -102,13 +103,13 @@ namespace Galaxy_Runner.EngineNS
 
 			string choiceOfShip = GetShipType ();
 
+            this.renderer.Clear();
+
 			Starship playerShip = InstantiatePlayerShip (choiceOfShip);
 
 			gameObjects.Add ((GameObject) playerShip);
 
             CreateObstacles(Level);
-
-            gameMap.PopulateMap(playerShip, gameObjects);
 
             while (this.IsRunning)
              {
@@ -123,7 +124,7 @@ namespace Galaxy_Runner.EngineNS
                             go.UpdatePosition();
                         }
                     }
-                    gameMap.UpdateMap(playerShip);
+                    gameMap.UpdateMap(playerShip, gameObjects);
                 }
                 this.reader.IsKeyPressed();
                 
@@ -131,7 +132,6 @@ namespace Galaxy_Runner.EngineNS
                 {
                     this.Level++;
                     CreateObstacles(Level);
-                    gameMap.PopulateMap(playerShip, gameObjects);
                 }
 
                 Collision(playerShip, gameObjects);
@@ -139,6 +139,7 @@ namespace Galaxy_Runner.EngineNS
 
                 this.Score += 3;
                 this.Iterations++;
+                Thread.Sleep(500);
             }
 
 

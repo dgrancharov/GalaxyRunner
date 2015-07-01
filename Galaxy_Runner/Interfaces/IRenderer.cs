@@ -12,6 +12,8 @@ namespace Galaxy_Runner.Interfaces
 
 		void WriteLine ();
 
+        void SetCursor(int x, int y);
+
         void Clear();
 	}
 }
