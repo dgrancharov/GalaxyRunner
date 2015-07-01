@@ -51,26 +51,31 @@ namespace Galaxy_Runner.EngineNS
 
         private void AtachReaderEvents()
         {
-            this.reader.KeyPress += EventControler;
+            this.reader.KeyPress += EventController;
         }
 
-        private void EventControler(object sender, ProcessEventArgs data)
+        private void EventController(object sender, ProcessEventArgs data)
         {
             switch (data.KeyPressed)
             {
-                case ConsoleKey.LeftArrow:
+                case ConsoleKey.UpArrow:
                     {
-                        //TODO
+                        MoveShipUp();
                     }
                     break;
-                case ConsoleKey.RightArrow:
+                case ConsoleKey.DownArrow:
                     {
-                        //TODO
+                        MoveShipDown();
+                    }
+                    break;
+                case ConsoleKey.P:
+                    {
+                        this.isPause = !this.isPause;
                     }
                     break;
                 case ConsoleKey.Spacebar:
                     {
-                        this.isPause = !this.isPause;
+                        //Todo
                     }
                     break;
             }
@@ -114,6 +119,7 @@ namespace Galaxy_Runner.EngineNS
                     {
                         if (go is Item)
                         {
+                            CheckPassedGameObjects(gameObjects);
                             go.UpdatePosition();
                         }
                     }
@@ -234,13 +240,40 @@ namespace Galaxy_Runner.EngineNS
 
         public void CheckDestroyedGameObjects(IList<GameObject> gameObjects)
         {
-            foreach (var item in gameObjects)
+            foreach (GameObject item in gameObjects)
             {
                 if (item.IsDestroyed)
                 {
                     gameObjects.Remove(item);
                 }
             }
+        }
+
+        public void CheckPassedGameObjects(IList<GameObject> gameObjects)
+        {
+            foreach (GameObject item in gameObjects)
+            {
+                if ( item is Item && item.Position.X < 5)
+                {
+                    item.IsDestroyed = true;
+                }
+            }
+        }
+
+        public void MoveShipUp()
+        {
+            int tmpPositionX = this.gameObjects.First(go => go is Starship).Position.X;
+            int tmpPositionY = this.gameObjects.First(go => go is Starship).Position.Y;
+
+            this.gameObjects.First(go => go is Starship).Position = new Position(tmpPositionX, tmpPositionY - 1);
+        }
+
+        public void MoveShipDown()
+        {
+            int tmpPositionX = this.gameObjects.First(go => go is Starship).Position.X;
+            int tmpPositionY = this.gameObjects.First(go => go is Starship).Position.Y;
+
+            this.gameObjects.First(go => go is Starship).Position = new Position(tmpPositionX, tmpPositionY + 1);
         }
 	}
 }

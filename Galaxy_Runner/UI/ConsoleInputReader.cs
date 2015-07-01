@@ -30,7 +30,7 @@ namespace Galaxy_Runner.UI
             if (Console.KeyAvailable)
             {
                 var keyPressed = this.ReadKey();
-                if (keyPressed.Key == ConsoleKey.LeftArrow || keyPressed.Key == ConsoleKey.RightArrow || keyPressed.Key == ConsoleKey.Spacebar)
+                if (keyPressed.Key == ConsoleKey.UpArrow || keyPressed.Key == ConsoleKey.DownArrow || keyPressed.Key == ConsoleKey.P || keyPressed.Key == ConsoleKey.Spacebar)
                 {
                     if (this.KeyPress != null)
                     {

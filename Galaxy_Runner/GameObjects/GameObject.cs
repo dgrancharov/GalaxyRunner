@@ -18,7 +18,11 @@ namespace Galaxy_Runner.GameObjects
             get 
             { 
                 return isDestroyed; 
-            } 
+            }
+            set
+            {
+                isDestroyed = value;
+            }
         }
 
 		public Position Position 
@@ -42,7 +46,7 @@ namespace Galaxy_Runner.GameObjects
 
         public void Destroy()
         {
-            isDestroyed = true;
+            IsDestroyed = true;
         }
 
         public void UpdatePosition()
