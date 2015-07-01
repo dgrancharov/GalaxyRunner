@@ -99,7 +99,7 @@ namespace Galaxy_Runner.EngineNS
 
 			gameObjects.Add ((GameObject) playerShip);
 
-            CreateObstacles(3);
+            CreateObstacles(Level);
 
             gameMap.PopulateMap(gameObjects);
 
