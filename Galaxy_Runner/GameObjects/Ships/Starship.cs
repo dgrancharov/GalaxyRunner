@@ -91,7 +91,6 @@ namespace Galaxy_Runner.GameObjects.Ships
 			throw new NotImplementedException ();
 		}
 
-        public abstract override void UpdatePosition();
         public abstract override char[,] ToPrintArray();
 	
 	}

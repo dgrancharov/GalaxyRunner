@@ -15,7 +15,7 @@ namespace Galaxy_Runner.GameObjects.Items.Obstacles
 			return string.Format("Obstacle");
 		}
 
-        public abstract override void UpdatePosition();
+
         public abstract override char[,] ToPrintArray();
 	}
 }

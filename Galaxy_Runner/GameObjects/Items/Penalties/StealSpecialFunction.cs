@@ -9,11 +9,6 @@ namespace Galaxy_Runner.GameObjects.Items.Penalties
 		{
 		}
 
-        public void UpdatePosition()
-        {
-            throw new NotImplementedException();
-        }
-
         public char[,] ToPrintArray()
         {
             throw new NotImplementedException();

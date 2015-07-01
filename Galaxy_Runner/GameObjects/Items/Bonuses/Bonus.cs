@@ -12,7 +12,6 @@ namespace Galaxy_Runner.GameObjects.Items.Bonuses
 			
 		}
 
-        public abstract override void UpdatePosition();
         public abstract override char[,] ToPrintArray();
 	}
 }

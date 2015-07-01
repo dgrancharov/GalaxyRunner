@@ -26,7 +26,7 @@ namespace Galaxy_Runner.EngineNS
         public IRenderer Renderer { get; private set; }
         public char[,] DataMap { get; private set; }
 
-        public void UpdateMap(IList<GameObject> gameObjects, Starship playerShip)
+        public void UpdateMap(Starship playerShip)
         {
             for (int row = 0; row < Height; row++)
             {
@@ -46,6 +46,22 @@ namespace Galaxy_Runner.EngineNS
 
             this.Renderer.Clear();
             PrintMap(DataMap);
+        }
+
+        private void RetrieveShip(Starship playerShip)
+        {
+            for (int row = 0; row < playerShip.ToPrintArray().GetLength(0); row++)
+            {
+                for (int col = 0; col < playerShip.ToPrintArray().GetLength(1); col++)
+                {
+                    if(col == 0)
+                    {
+                        DataMap[row + playerShip.Position.Y, col + playerShip.Position.X - 1] = ' ';
+                    }
+                    DataMap[row + playerShip.Position.Y, col + playerShip.Position.X] = playerShip.ToPrintArray()[row, col];
+                }
+            }
+
         }
 
         private void PrintMap(char[,] map)
@@ -84,8 +100,9 @@ namespace Galaxy_Runner.EngineNS
             }
         }
 
-        private void RetrieveShip(Starship playerShip)
+        public void PopulateMap(Starship playerShip, IList<GameObject> gameObjects)
         {
+            // populate the ship
             for (int row = 0; row < playerShip.ToPrintArray().GetLength(0); row++)
             {
                 for (int col = 0; col < playerShip.ToPrintArray().GetLength(1); col++)
@@ -93,13 +110,11 @@ namespace Galaxy_Runner.EngineNS
                     DataMap[row + playerShip.Position.Y, col + playerShip.Position.X] = playerShip.ToPrintArray()[row, col];
                 }
             }
-        }
 
-        public void PopulateMap(IList<GameObject> gameObjects)
-        {
+            // populate obstacles only from the buffer zone (the others are already populated);
             for (int row = 0; row < Height; row++)
             {
-                for (int col = 0; col < Width; col++)
+                for (int col = ReducedWidth; col < Width; col++)
                 {
                     if ( gameObjects.Contains(gameObjects.FirstOrDefault(go => go.Position.X == col && go.Position.Y == row ) ) )
                     {
@@ -107,8 +122,8 @@ namespace Galaxy_Runner.EngineNS
                     }
                 }
             }
-            PrintMap(DataMap);
-            this.Renderer.Clear();
+//            PrintMap(DataMap);
+//            this.Renderer.Clear();
         }
     }
 }

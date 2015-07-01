@@ -17,7 +17,6 @@ namespace Galaxy_Runner.GameObjects.Items
 
 		public abstract override string ToString();
 
-        public abstract override void UpdatePosition();
         public abstract override char[,] ToPrintArray();
 	}
 }

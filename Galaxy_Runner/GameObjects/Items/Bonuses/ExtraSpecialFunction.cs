@@ -9,11 +9,6 @@ namespace Galaxy_Runner.GameObjects.Items.Bonuses
 		{
 		}
 
-        public void UpdatePosition()
-        {
-            throw new NotImplementedException();
-        }
-
         public char[,] ToPrintArray()
         {
             throw new NotImplementedException();

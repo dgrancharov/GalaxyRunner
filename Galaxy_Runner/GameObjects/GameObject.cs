@@ -45,7 +45,14 @@ namespace Galaxy_Runner.GameObjects
             isDestroyed = true;
         }
 
-        public abstract void UpdatePosition();
+        public void UpdatePosition()
+        {
+            int tmpPositionX = this.Position.X;
+            int tmpPositionY = this.Position.Y;
+
+            this.Position = new Position(tmpPositionX - 1, tmpPositionY);
+        }
+
         public abstract char[,] ToPrintArray();
 	}
 }

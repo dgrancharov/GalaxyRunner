@@ -7,6 +7,7 @@ using Galaxy_Runner.GameObjects;
 using Galaxy_Runner.EngineNS.Factories;
 using Galaxy_Runner.GameObjects.Ships;
 using Galaxy_Runner.EngineNS.Commands;
+using Galaxy_Runner.GameObjects.Items;
 
 namespace Galaxy_Runner.EngineNS
 {
@@ -15,6 +16,7 @@ namespace Galaxy_Runner.EngineNS
 		public const int height = 33;
 		public const int width = 150;
         public const int reducedWidth = 120;
+        public const int obstacleMaxSize = 7;
         
         private bool isPause = false;
 
@@ -101,14 +103,21 @@ namespace Galaxy_Runner.EngineNS
 
             CreateObstacles(Level);
 
-            gameMap.PopulateMap(gameObjects);
+            gameMap.PopulateMap(playerShip, gameObjects);
 
             while (this.IsRunning)
              {
-                 this.IsRunning = true;
+                this.IsRunning = true;
                 if (!isPause)
                 {
-                    gameMap.UpdateMap(gameObjects, playerShip);
+                    foreach (GameObject go in gameObjects)
+                    {
+                        if (go is Item)
+                        {
+                            go.UpdatePosition();
+                        }
+                    }
+                    gameMap.UpdateMap(playerShip);
                 }
                 this.reader.IsKeyPressed();
                 
@@ -116,8 +125,11 @@ namespace Galaxy_Runner.EngineNS
                 {
                     this.Level++;
                     CreateObstacles(Level);
-                    gameMap.PopulateMap(gameObjects);
+                    gameMap.PopulateMap(playerShip, gameObjects);
                 }
+
+                Collision(playerShip, gameObjects);
+                CheckDestroyedGameObjects(gameObjects);
 
                 this.Score += 3;
                 this.Iterations++;
@@ -148,13 +160,13 @@ namespace Galaxy_Runner.EngineNS
 			switch(choiceOfShip)
 			{
 			case "1":
-				playerShip = new Scooter (new Position (0, height/2));
+				playerShip = new Scooter (new Position (2, height/2 - 2));
 				break;
 			case "2":
-				playerShip = new Catamaran (new Position (0, height/2));
+				playerShip = new Catamaran (new Position (2, height/2 - 2));
 				break;
 			case "3":
-				playerShip = new BattleCruiser (new Position (0, height/2));
+				playerShip = new BattleCruiser (new Position (2, height/2 - 2));
 				break;
 			}
 
@@ -173,7 +185,7 @@ namespace Galaxy_Runner.EngineNS
         public Position GetRandomPosition(int Level)
         {
             int x = GetRandomX(Level);
-            int y = GetRandomY();
+            int y = GetRandomY(Level);
             Position newPosition = new Position(x, y);
 
             return newPosition;
@@ -181,20 +193,30 @@ namespace Galaxy_Runner.EngineNS
         
         public static int GetRandomX(int Level)
         {
-            if(Level < (width - reducedWidth) - 1)
+            int tmpRandomx;
+            if(Level < obstacleMaxSize )
             {
-                return Rand.Next(reducedWidth, width - Level);
+                tmpRandomx = Rand.Next(reducedWidth, width - Level);
             }
             else
             {
-                return Rand.Next(reducedWidth, reducedWidth + 1);
+                tmpRandomx = Rand.Next(reducedWidth, width - obstacleMaxSize);
             }
-            
+            return tmpRandomx;
         }
        
-        public static int GetRandomY()
+        public static int GetRandomY(int Level)
         {
-            return Rand.Next(0, height);
+            int tmpRandomY;
+            if (Level < obstacleMaxSize)
+            {
+                tmpRandomY = Rand.Next(0, height - Level);
+            }
+            else
+            {
+                tmpRandomY = Rand.Next(0, height - obstacleMaxSize);
+            }
+            return tmpRandomY;
         }
 
         public void Collision(Starship ship, IList<GameObject> gameObjects)
@@ -210,7 +232,7 @@ namespace Galaxy_Runner.EngineNS
             }
         }
 
-        public void Destroyed(IList<GameObject> gameObjects)
+        public void CheckDestroyedGameObjects(IList<GameObject> gameObjects)
         {
             foreach (var item in gameObjects)
             {

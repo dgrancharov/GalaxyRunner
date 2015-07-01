@@ -11,7 +11,6 @@ namespace Galaxy_Runner.GameObjects.Items.Penalties
 		{
 		}
 
-        public abstract override void UpdatePosition();
         public abstract override char[,] ToPrintArray();
 	}
 }
