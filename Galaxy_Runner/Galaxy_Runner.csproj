@@ -36,8 +36,8 @@
     <Compile Include="EngineNS\Commands\ClickEventHandler.cs" />
     <Compile Include="EngineNS\Commands\ProcessEventArgs.cs" />
     <Compile Include="GameObjects\Items\Obstacles\SquareObstacle.cs" />
-    <Compile Include="GameObjects\Projectiles\Laser.cs" />
-    <Compile Include="GameObjects\Projectiles\Projectile.cs" />
+    <Compile Include="GameObjects\Items\Projectiles\Laser.cs" />
+    <Compile Include="GameObjects\Items\Projectiles\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GalaxyRunnerMain.cs" />
     <Compile Include="GameObjects\Ships\Starship.cs" />

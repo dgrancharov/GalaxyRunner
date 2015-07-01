@@ -89,7 +89,7 @@ namespace Galaxy_Runner.GameObjects.Ships
 
         public Projectile CreateProjectile()
         {
-            Position pos = new Position(this.Position.X + ToPrintArray().GetLength(1), this.Position.Y);
+            Position pos = new Position(this.Position.X + ToPrintArray().GetLength(1), this.Position.Y + 1);
             return new Laser(pos);
         }
 

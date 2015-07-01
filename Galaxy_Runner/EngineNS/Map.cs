@@ -7,6 +7,7 @@ using Galaxy_Runner.GameObjects.Ships;
 using Galaxy_Runner.GameObjects.Items.Obstacles;
 using Galaxy_Runner.GameObjects.Items.Bonuses;
 using Galaxy_Runner.GameObjects.Items.Penalties;
+using Galaxy_Runner.GameObjects.Items.Projectiles;
 
 namespace Galaxy_Runner.EngineNS
 {
@@ -32,13 +33,14 @@ namespace Galaxy_Runner.EngineNS
              foreach (GameObject go in gameObjects)
              {
 //                 this.Renderer.Clear();
-                 this.Renderer.SetCursor(go.Position.X, go.Position.Y);
+                 ClearObject(go);
                  PrintGameObject(go);
              }
         }
         
         private void PrintGameObject(GameObject gameObject)
         {
+            this.Renderer.SetCursor(gameObject.Position.X, gameObject.Position.Y);
             string color;
             for (int row = 0; row < gameObject.ToPrintArray().GetLength(0); row++)
             {
@@ -64,9 +66,31 @@ namespace Galaxy_Runner.EngineNS
                         color = "Red";
                         this.Renderer.Write(color, gameObject.ToPrintArray()[row, col]);
                     }
+                    else if (gameObject is Projectile)
+                    {
+                        color = "White";
+                        this.Renderer.Write(color, gameObject.ToPrintArray()[row, col]);
+                    }
                 }
                 this.Renderer.WriteLine();
                 this.Renderer.SetCursor(gameObject.Position.X, gameObject.Position.Y + row + 1);
+            }
+        }
+
+        private void ClearObject(GameObject gameObject)
+        {
+            if(gameObject.Position.X != gameObject.OldPosition.X || gameObject.Position.Y != gameObject.OldPosition.Y)
+            {
+                this.Renderer.SetCursor(gameObject.OldPosition.X, gameObject.OldPosition.Y);
+                for (int row = 0; row < gameObject.ToPrintArray().GetLength(0); row++)
+                {
+                    for (int col = 0; col < gameObject.ToPrintArray().GetLength(1); col++)
+                    {
+                        this.Renderer.Write("Black", ' ');
+                    }
+                    this.Renderer.WriteLine();
+                    this.Renderer.SetCursor(gameObject.Position.X, gameObject.Position.Y + row + 1);
+                }
             }
         }
     }

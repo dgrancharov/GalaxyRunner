@@ -43,6 +43,8 @@ namespace Galaxy_Runner.EngineNS
             this.Score = 0;
             this.Level = 1;
             this.Iterations = 1;
+            this.Difficulty = "Low";
+            this.ThreadSleepConst = 500;
 		}
 
         private int Iterations { get; set; }
@@ -52,6 +54,8 @@ namespace Galaxy_Runner.EngineNS
         public PenaltyFactory PenaltyFactory { get; private set; }
         public int Score { get; set; }
         public int Level { get; set; }
+        public string Difficulty { get; set; }
+        public int ThreadSleepConst { get; set; }
 
         private void AtachReaderEvents()
         {
@@ -106,12 +110,19 @@ namespace Galaxy_Runner.EngineNS
 
 			string choiceOfShip = GetShipType ();
 
+            this.renderer.WriteLine ("White", "Choose difficulty:");
+            this.renderer.WriteLine ("White", "\t Low, Medium, High");
+
+            GetDifficulty ();
+
             this.renderer.Clear();
 
 			Starship playerShip = InstantiatePlayerShip (choiceOfShip);
+            
+            this.ThreadSleepConst = SetDifficulty(this.Difficulty);
 
 			gameObjects.Add ((GameObject) playerShip);
-
+            
             CreateObstacles(Level);
 
             while (this.IsRunning)
@@ -119,55 +130,52 @@ namespace Galaxy_Runner.EngineNS
                 this.IsRunning = true;
                 if (!isPause)
                 {
-                    if(projectilesOnMap.Count > 0)
-                    {
-                        MoveProjectiles(projectilesOnMap);
-                    }
+                    //if(projectilesOnMap.Count > 0)
+                    //{
+                    //    MoveProjectiles(projectilesOnMap);
+                    //}
 
                     foreach (GameObject go in gameObjects)
                     {
-                        if (go is Item)
+                        if (!(go is Starship))
                         {
                             CheckPassedGameObjects(gameObjects);
                             go.UpdatePosition();
                         }
                     }
                     gameMap.UpdateMap(playerShip, gameObjects);
-                    Thread.Sleep(500 - Level * 20);
+                    
+                    if (this.Iterations % (width - reducedWidth) == 0)
+                    {
+                        this.Level++;
+                        CreateObstacles(Level);
+                    }
+
+                    Collision(playerShip, gameObjects);
+                    CheckDestroyedGameObjects(gameObjects);
+
+                    Thread.Sleep(this.ThreadSleepConst - Level * 50);
                 }
                 this.reader.IsKeyPressed();
-                
-                if(this.Iterations % (width - reducedWidth) == 0)
-                {
-                    this.Level++;
-                    CreateObstacles(Level);
-                }
-
-                Collision(playerShip, gameObjects);
-                CheckDestroyedGameObjects(gameObjects);
 
                 this.Score += 3;
-                this.Iterations++;
-                
+                this.Iterations++;   
             }
-
-
-
 		}
 
-		public string GetShipType ()
-		{
-			string choiceOfShip = this.reader.ReadLine ();
+        public string GetShipType()
+        {
+            string choiceOfShip = this.reader.ReadLine();
 
-			string[] validChoices = { "1", "2", "3" };
+            string[] validChoices = { "1", "2", "3" };
 
-			while (!validChoices.Contains (choiceOfShip)) {
+            while (!validChoices.Contains(choiceOfShip))
+            {
                 this.renderer.WriteLine("White", "Invalid choice of shiptype, please re-enter.");
-				choiceOfShip = this.reader.ReadLine ();
-			}
-			return choiceOfShip;
-
-		}
+                choiceOfShip = this.reader.ReadLine();
+            }
+            return choiceOfShip;
+        }
 			
 		public Starship InstantiatePlayerShip(string choiceOfShip)
 		{
@@ -188,6 +196,41 @@ namespace Galaxy_Runner.EngineNS
 
 			return playerShip;
 		}
+
+        public void GetDifficulty()
+        {
+            string choiceOfDifficulty = this.reader.ReadLine();
+
+            string[] validChoices = { "Low", "Medium", "High" };
+
+            if (validChoices.Contains(choiceOfDifficulty))
+            {
+                this.renderer.WriteLine("White", "Invalid choice of difficulty, please re-enter.");
+                this.Difficulty = choiceOfDifficulty;
+            }
+            else
+            {
+                this.Difficulty = "Low";
+            }
+        }
+        
+        public int SetDifficulty (string difficulty)
+        {
+            int tmpDiff = 0;
+            switch(difficulty)
+            {
+                case "Low":
+                    tmpDiff = 500;
+                    break;
+                case "Medium":
+                    tmpDiff = 400;
+                    break;
+                case "High":
+                    tmpDiff = 300;
+                    break;
+            }
+            return tmpDiff;
+        }
         
         public void CreateObstacles(int Level)
         {
@@ -249,11 +292,11 @@ namespace Galaxy_Runner.EngineNS
 
         public void CheckDestroyedGameObjects(IList<GameObject> gameObjects)
         {
-            foreach (GameObject item in gameObjects)
+            foreach (GameObject gameObject in gameObjects)
             {
-                if (item.IsDestroyed)
+                if (gameObject.IsDestroyed)
                 {
-                    gameObjects.Remove(item);
+                    gameObjects.Remove(gameObject);
                 }
             }
         }
@@ -273,16 +316,25 @@ namespace Galaxy_Runner.EngineNS
         {
             int tmpPositionX = this.gameObjects.First(go => go is Starship).Position.X;
             int tmpPositionY = this.gameObjects.First(go => go is Starship).Position.Y;
+            if (tmpPositionY > 0)
+            {
+                this.gameObjects.First(go => go is Starship).Position = new Position(tmpPositionX, tmpPositionY - 1);
+                this.gameObjects.First(go => go is Starship).OldPosition = new Position(tmpPositionX, tmpPositionY);
+            }
 
-            this.gameObjects.First(go => go is Starship).Position = new Position(tmpPositionX, tmpPositionY - 1);
         }
 
         public void MoveShipDown()
         {
+
             int tmpPositionX = this.gameObjects.First(go => go is Starship).Position.X;
             int tmpPositionY = this.gameObjects.First(go => go is Starship).Position.Y;
+            if (tmpPositionY < height - 4)
+            {
+                this.gameObjects.First(go => go is Starship).Position = new Position(tmpPositionX, tmpPositionY + 1);
+                this.gameObjects.First(go => go is Starship).OldPosition = new Position(tmpPositionX, tmpPositionY);
+            }
 
-            this.gameObjects.First(go => go is Starship).Position = new Position(tmpPositionX, tmpPositionY + 1);
         }
 
         public void DestroyObstacles()
@@ -303,7 +355,8 @@ namespace Galaxy_Runner.EngineNS
         public void Shoot()
         {
             Starship tmpShip = (Starship) this.gameObjects.First(go => go is Starship);
-            this.projectilesOnMap.Add(tmpShip.CreateProjectile());
+ //           this.projectilesOnMap.Add(tmpShip.CreateProjectile());
+            this.gameObjects.Add(tmpShip.CreateProjectile());
         }
 
         public void MoveProjectiles(IList<Projectile> projectiles)
@@ -311,7 +364,7 @@ namespace Galaxy_Runner.EngineNS
             foreach (var projectile in projectiles)
             {
                 this.renderer.SetCursor(projectile.Position.X, projectile.Position.Y);
-                this.renderer.Write("White", projectile.Symbol);
+                this.renderer.Write("White", projectile.ToPrintArray()[0,0]);
                 var position = projectile.Position;
                 position.X += 1;
                 projectile.Position = position;
