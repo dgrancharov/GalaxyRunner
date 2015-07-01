@@ -6,11 +6,20 @@ namespace Galaxy_Runner.GameObjects
 	public abstract class GameObject
 	{
 		private Position position;
+        private bool isDestroyed = false;
 
 		public GameObject (Position position)
 		{
 			this.Position = position;
 		}
+
+        public bool IsDestroyed
+        { 
+            get 
+            { 
+                return isDestroyed; 
+            } 
+        }
 
 		public Position Position 
 		{
@@ -30,6 +39,11 @@ namespace Galaxy_Runner.GameObjects
 				this.position = value;
 			}
 		}
+
+        public void Destroy()
+        {
+            isDestroyed = true;
+        }
 
         public abstract void UpdatePosition();
         public abstract char[,] ToPrintArray();

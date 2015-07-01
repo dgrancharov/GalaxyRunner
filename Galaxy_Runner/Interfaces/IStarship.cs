@@ -1,5 +1,6 @@
 ﻿using System;
 using Galaxy_Runner.GameObjects.Items.Obstacles;
+using Galaxy_Runner.GameObjects;
 
 namespace Galaxy_Runner.Interfaces
 {
@@ -8,7 +9,7 @@ namespace Galaxy_Runner.Interfaces
 		// Optional - when left/right movement is implemented
 		// double Fuel { get; set; }
 
-		void Collide(Obstacle obstacle);
+		void Collide(GameObject obstacle);
 	}
 }
 

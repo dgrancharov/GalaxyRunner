@@ -36,7 +36,7 @@ namespace Galaxy_Runner.EngineNS
             this.BonusFactory = new BonusFactory();
             this.Score = 0;
             this.Level = 1;
-            this.Iterations = 0;
+            this.Iterations = 1;
 		}
 
         private int Iterations { get; set; }
@@ -104,8 +104,8 @@ namespace Galaxy_Runner.EngineNS
             gameMap.PopulateMap(gameObjects);
 
             while (this.IsRunning)
-            {
-                this.IsRunning = true;
+             {
+                 this.IsRunning = true;
                 if (!isPause)
                 {
                     gameMap.UpdateMap(gameObjects, playerShip);
@@ -114,11 +114,12 @@ namespace Galaxy_Runner.EngineNS
                 
                 if(this.Iterations % (width - reducedWidth) == 0)
                 {
+                    this.Level++;
                     CreateObstacles(Level);
+                    gameMap.PopulateMap(gameObjects);
                 }
 
                 this.Score += 3;
-                this.Level = this.Score / 30 + 1;
                 this.Iterations++;
             }
 
@@ -180,12 +181,44 @@ namespace Galaxy_Runner.EngineNS
         
         public static int GetRandomX(int Level)
         {
-            return Rand.Next(reducedWidth, width - Level);
+            if(Level < (width - reducedWidth) - 1)
+            {
+                return Rand.Next(reducedWidth, width - Level);
+            }
+            else
+            {
+                return Rand.Next(reducedWidth, reducedWidth + 1);
+            }
+            
         }
        
         public static int GetRandomY()
         {
             return Rand.Next(0, height);
+        }
+
+        public void Collision(Starship ship, IList<GameObject> gameObjects)
+        {
+
+            foreach (var obstacle in gameObjects)
+            {
+                if (!(obstacle is Starship))
+                {
+                    ship.Collide(obstacle);
+                }
+
+            }
+        }
+
+        public void Destroyed(IList<GameObject> gameObjects)
+        {
+            foreach (var item in gameObjects)
+            {
+                if (item.IsDestroyed)
+                {
+                    gameObjects.Remove(item);
+                }
+            }
         }
 	}
 }

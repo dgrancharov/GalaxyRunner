@@ -8,14 +8,36 @@ namespace Galaxy_Runner.GameObjects.Ships
 {
 	public abstract class Starship : GameObject , IStarship, IDestroyable, ICollect, IShoot
 	{
-		private int lives = 3;
-		private List<Item> inventory;
+        private const int defaultHealth = 150;
+        
+        private int lives = 3;
+        private int health;
+       
+
+        private List<Item> inventory;
 
 		protected Starship (Position position)
 			: base (position)
 		{
 			inventory = new List<Item> ();
+            this.Health = defaultHealth;
 		}
+
+        public int Health
+        {
+            get { return this.health; }
+
+            set
+            {
+
+                this.health = value;
+                if (this.Health <= 0)
+                {
+                    this.Lives--;
+                    this.health = defaultHealth;
+                }
+            }
+        }
 
 		public int Lives {
 			get 
@@ -24,8 +46,11 @@ namespace Galaxy_Runner.GameObjects.Ships
 			}
 			set 
 			{
-				// validate
-				this.lives = value;
+                this.lives = value;
+                if (this.lives == 0)
+                {
+                    this.Destroy();
+                }
 			}
 		}
 
@@ -37,10 +62,24 @@ namespace Galaxy_Runner.GameObjects.Ships
 			}
 		}
 
-		public void Collide (Obstacle obstacle)
-		{
-			throw new NotImplementedException ();
-		}
+        public void Collide (GameObject obstacle)
+        {
+            for (int y = this.Position.Y; y < this.ToPrintArray().GetLength(0); y++)
+            {
+                for (int x = this.Position.X; x < this.ToPrintArray().GetLength(1); x++)
+                {
+                    if (obstacle.Position.X == x && obstacle.Position.Y == y)
+                    {
+                        if (obstacle is Obstacle)
+                        {
+                            this.Health -= 50;
+                            obstacle.Destroy();
+                        }
+                        //TO DO for items and Bonuses
+                    }
+                }
+            }
+        }
 			
 		public void AddItemToInventory (Item item)
 		{
