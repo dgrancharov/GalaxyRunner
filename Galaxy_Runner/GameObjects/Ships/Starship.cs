@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Galaxy_Runner.Interfaces;
 using Galaxy_Runner.GameObjects.Items;
 using Galaxy_Runner.GameObjects.Items.Obstacles;
+using Galaxy_Runner.GameObjects.Items.Projectiles;
 
 namespace Galaxy_Runner.GameObjects.Ships
 {
@@ -85,11 +86,12 @@ namespace Galaxy_Runner.GameObjects.Ships
 		{
 			throw new NotImplementedException ();
 		}
-			
-		public void Shoot (char bulletType, int bulletCount)
-		{
-			throw new NotImplementedException ();
-		}
+
+        public Projectile CreateProjectile()
+        {
+            Position pos = new Position(this.Position.X + ToPrintArray().GetLength(1), this.Position.Y);
+            return new Laser(pos);
+        }
 
         public abstract override char[,] ToPrintArray();
 	

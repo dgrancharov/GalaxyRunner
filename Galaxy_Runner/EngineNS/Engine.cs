@@ -9,6 +9,7 @@ using Galaxy_Runner.EngineNS.Factories;
 using Galaxy_Runner.GameObjects.Ships;
 using Galaxy_Runner.EngineNS.Commands;
 using Galaxy_Runner.GameObjects.Items;
+using Galaxy_Runner.GameObjects.Items.Projectiles;
 
 namespace Galaxy_Runner.EngineNS
 {
@@ -27,6 +28,7 @@ namespace Galaxy_Runner.EngineNS
 		private readonly IRenderer renderer;
 
 		private readonly IList<GameObject> gameObjects;
+        private readonly IList<Projectile> projectilesOnMap;
 
 		public Engine (IInputReader reader, IRenderer renderer)
 		{
@@ -34,6 +36,7 @@ namespace Galaxy_Runner.EngineNS
             this.AtachReaderEvents();
 			this.renderer = renderer;
 			this.gameObjects = new List<GameObject> ();
+            this.projectilesOnMap = new List<Projectile>();
             this.ObstacleFactory = new ObstacleFactory();
             this.PenaltyFactory = new PenaltyFactory();
             this.BonusFactory = new BonusFactory();
@@ -76,7 +79,7 @@ namespace Galaxy_Runner.EngineNS
                     break;
                 case ConsoleKey.Spacebar:
                     {
-                        //Todo
+                        Shoot();
                     }
                     break;
             }
@@ -116,6 +119,11 @@ namespace Galaxy_Runner.EngineNS
                 this.IsRunning = true;
                 if (!isPause)
                 {
+                    if(projectilesOnMap.Count > 0)
+                    {
+                        MoveProjectiles(projectilesOnMap);
+                    }
+
                     foreach (GameObject go in gameObjects)
                     {
                         if (go is Item)
@@ -125,6 +133,7 @@ namespace Galaxy_Runner.EngineNS
                         }
                     }
                     gameMap.UpdateMap(playerShip, gameObjects);
+                    Thread.Sleep(500 - Level * 20);
                 }
                 this.reader.IsKeyPressed();
                 
@@ -139,7 +148,7 @@ namespace Galaxy_Runner.EngineNS
 
                 this.Score += 3;
                 this.Iterations++;
-                Thread.Sleep(500);
+                
             }
 
 
@@ -203,11 +212,11 @@ namespace Galaxy_Runner.EngineNS
             int tmpRandomx;
             if(Level < obstacleMaxSize )
             {
-                tmpRandomx = Rand.Next(reducedWidth, width - Level);
+                tmpRandomx = Rand.Next(reducedWidth, width - Level - 1);
             }
             else
             {
-                tmpRandomx = Rand.Next(reducedWidth, width - obstacleMaxSize);
+                tmpRandomx = Rand.Next(reducedWidth, width - obstacleMaxSize - 1);
             }
             return tmpRandomx;
         }
@@ -217,11 +226,11 @@ namespace Galaxy_Runner.EngineNS
             int tmpRandomY;
             if (Level < obstacleMaxSize)
             {
-                tmpRandomY = Rand.Next(0, height - Level);
+                tmpRandomY = Rand.Next(0, height - Level - 1);
             }
             else
             {
-                tmpRandomY = Rand.Next(0, height - obstacleMaxSize);
+                tmpRandomY = Rand.Next(0, height - obstacleMaxSize - 1);
             }
             return tmpRandomY;
         }
@@ -235,7 +244,6 @@ namespace Galaxy_Runner.EngineNS
                 {
                     ship.Collide(obstacle);
                 }
-
             }
         }
 
@@ -275,6 +283,39 @@ namespace Galaxy_Runner.EngineNS
             int tmpPositionY = this.gameObjects.First(go => go is Starship).Position.Y;
 
             this.gameObjects.First(go => go is Starship).Position = new Position(tmpPositionX, tmpPositionY + 1);
+        }
+
+        public void DestroyObstacles()
+        {
+            foreach (var obstacle in this.gameObjects)
+            {
+                foreach (var projectile in this.projectilesOnMap)
+                {
+                    if (projectile.Position.X == obstacle.Position.X && projectile.Position.Y == obstacle.Position.Y)
+                    {
+                        this.gameObjects.Remove(obstacle);
+                        this.projectilesOnMap.Remove(projectile);
+                    }
+                }
+            }
+        }
+
+        public void Shoot()
+        {
+            Starship tmpShip = (Starship) this.gameObjects.First(go => go is Starship);
+            this.projectilesOnMap.Add(tmpShip.CreateProjectile());
+        }
+
+        public void MoveProjectiles(IList<Projectile> projectiles)
+        {
+            foreach (var projectile in projectiles)
+            {
+                this.renderer.SetCursor(projectile.Position.X, projectile.Position.Y);
+                this.renderer.Write("White", projectile.Symbol);
+                var position = projectile.Position;
+                position.X += 1;
+                projectile.Position = position;
+            }
         }
 	}
 }

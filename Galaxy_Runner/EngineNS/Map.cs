@@ -46,7 +46,7 @@ namespace Galaxy_Runner.EngineNS
                 {
                     if(gameObject is Starship)
                     {
-                        color = "White";
+                        color = "Gray";
                         this.Renderer.Write(color, gameObject.ToPrintArray()[row, col]);
                     }
                     else if (gameObject is Obstacle)
