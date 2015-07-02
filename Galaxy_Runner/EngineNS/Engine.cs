@@ -96,8 +96,6 @@ namespace Galaxy_Runner.EngineNS
 		{
 			this.IsRunning = true;
 
-//			Map gameMap = new Map (height, width, reducedWidth, renderer);
-
 			this.renderer.WriteLine ("White","Welcome to Galaxy Runner!\n\n");
 
             this.renderer.WriteLine ("White", "Use the Up and Down keys to play.");
@@ -350,17 +348,16 @@ namespace Galaxy_Runner.EngineNS
             IList<GameObject> ObstaclesInGameObjects = this.gameObjects.Where(go => go is Obstacle).ToList();
             IList<GameObject> ProjectilesInGameObjects = this.gameObjects.Where(go => go is Projectile).ToList();
 
-
-            for (int i = 0; i < ObstaclesInGameObjects.Count; i++)
+            foreach (GameObject obstacle in ObstaclesInGameObjects)
             {
-                for (int j = 0; j < ProjectilesInGameObjects.Count; j++)
+                foreach (GameObject projectile in ProjectilesInGameObjects)
                 {
-                    for (int y = gameObjects[i].OldPosition.Y; y < gameObjects[i].ToPrintArray().GetLength(0); y++)
+                    for (int y = obstacle.OldPosition.Y; y < obstacle.OldPosition.Y + obstacle.ToPrintArray().GetLength(0); y++)
                     {
-                        if (this.gameObjects[j].Position.X == this.gameObjects[i].OldPosition.X  && this.gameObjects[j].Position.Y == y || this.gameObjects[j].OldPosition.X == this.gameObjects[i].OldPosition.X  && this.gameObjects[j].OldPosition.Y == y)
+                        if (projectile.Position.X == obstacle.OldPosition.X && projectile.Position.Y == y || projectile.OldPosition.X == obstacle.OldPosition.X && projectile.OldPosition.Y == y)
                         {
-                            this.gameObjects[i].IsDestroyed = true;
-                            this.gameObjects[j].IsDestroyed = true;
+                            obstacle.IsDestroyed = true;
+                            projectile.IsDestroyed = true;
                         }
                     }
                 }
