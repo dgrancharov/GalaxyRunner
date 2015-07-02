@@ -10,6 +10,7 @@ using Galaxy_Runner.GameObjects.Ships;
 using Galaxy_Runner.EngineNS.Commands;
 using Galaxy_Runner.GameObjects.Items;
 using Galaxy_Runner.GameObjects.Items.Projectiles;
+using Galaxy_Runner.GameObjects.Items.Obstacles;
 
 namespace Galaxy_Runner.EngineNS
 {
@@ -44,7 +45,7 @@ namespace Galaxy_Runner.EngineNS
             this.Level = 1;
             this.Iterations = 1;
             this.Difficulty = "Low";
-            this.ThreadSleepConst = 500;
+            this.ThreadSleepConst = 350;
 		}
 
         private int Iterations { get; set; }
@@ -130,10 +131,10 @@ namespace Galaxy_Runner.EngineNS
                 this.IsRunning = true;
                 if (!isPause)
                 {
-                    //if(projectilesOnMap.Count > 0)
-                    //{
-                    //    MoveProjectiles(projectilesOnMap);
-                    //}
+                    if (this.gameObjects.Where(go => go is Projectile).Count() > 0)
+                    {
+                        DestroyObstacles();
+                    }
 
                     foreach (GameObject go in gameObjects)
                     {
@@ -154,13 +155,19 @@ namespace Galaxy_Runner.EngineNS
                     Collision(playerShip, gameObjects);
                     CheckDestroyedGameObjects(gameObjects);
 
-                    Thread.Sleep(this.ThreadSleepConst - Level * 50);
+                    this.Score += 3;
+                    this.Iterations++;
+                    this.CheckShipLives(playerShip);
+
+                    if ((this.ThreadSleepConst - Level * 50) > 0)
+                    {
+                        Thread.Sleep(this.ThreadSleepConst - Level * 50);
+                    }
                 }
                 this.reader.IsKeyPressed();
-
-                this.Score += 3;
-                this.Iterations++;   
             }
+            this.renderer.WriteLine("White", "Game Over!");
+            this.renderer.WriteLine("White", "Your score: {0}", this.Score);
 		}
 
         public string GetShipType()
@@ -220,13 +227,13 @@ namespace Galaxy_Runner.EngineNS
             switch(difficulty)
             {
                 case "Low":
-                    tmpDiff = 500;
+                    tmpDiff = 350;
                     break;
                 case "Medium":
-                    tmpDiff = 400;
+                    tmpDiff = 250;
                     break;
                 case "High":
-                    tmpDiff = 300;
+                    tmpDiff = 150;
                     break;
             }
             return tmpDiff;
@@ -292,22 +299,22 @@ namespace Galaxy_Runner.EngineNS
 
         public void CheckDestroyedGameObjects(IList<GameObject> gameObjects)
         {
-            foreach (GameObject gameObject in gameObjects)
+            for (int i = 0; i < this.gameObjects.Count; i++)
             {
-                if (gameObject.IsDestroyed)
+                if (this.gameObjects[i].IsDestroyed)
                 {
-                    gameObjects.Remove(gameObject);
+                    gameObjects.Remove(this.gameObjects[i]);
                 }
             }
         }
 
         public void CheckPassedGameObjects(IList<GameObject> gameObjects)
         {
-            foreach (GameObject item in gameObjects)
+            for (int i = 0; i < this.gameObjects.Count; i++)
             {
-                if ( item is Item && item.Position.X < 5)
+                if (gameObjects[i] is Item && this.gameObjects[i].Position.X < 5)
                 {
-                    item.IsDestroyed = true;
+                    gameObjects.Remove(this.gameObjects[i]);
                 }
             }
         }
@@ -339,14 +346,21 @@ namespace Galaxy_Runner.EngineNS
 
         public void DestroyObstacles()
         {
-            foreach (var obstacle in this.gameObjects)
+            int maxObstacles = this.gameObjects.Where(go => go is Obstacle).Count();
+            int maxProjectiles = this.gameObjects.Where(go => go is Projectile).Count();
+
+            for (int i = 0; i < maxObstacles; i++)
             {
-                foreach (var projectile in this.projectilesOnMap)
+                for (int j = 0; j < maxProjectiles; j++)
                 {
-                    if (projectile.Position.X == obstacle.Position.X && projectile.Position.Y == obstacle.Position.Y)
+                    for (int y = gameObjects[i].Position.Y; y < gameObjects[i].ToPrintArray().GetLength(0); y++)
                     {
-                        this.gameObjects.Remove(obstacle);
-                        this.projectilesOnMap.Remove(projectile);
+                        if (this.gameObjects[i].Position.X == this.gameObjects[j].Position.X && this.gameObjects[i].Position.Y == this.gameObjects[j].Position.Y)
+                        {
+                            this.gameObjects.Remove(this.gameObjects[i]);
+                            this.gameObjects.Remove(this.gameObjects[j]);
+//                            this.projectilesOnMap.Remove(this.projectilesOnMap[j]);
+                        }
                     }
                 }
             }
@@ -355,19 +369,32 @@ namespace Galaxy_Runner.EngineNS
         public void Shoot()
         {
             Starship tmpShip = (Starship) this.gameObjects.First(go => go is Starship);
- //           this.projectilesOnMap.Add(tmpShip.CreateProjectile());
-            this.gameObjects.Add(tmpShip.CreateProjectile());
+            Projectile tmpProjectile = tmpShip.CreateProjectile();
+
+            this.gameObjects.Add(tmpProjectile);
         }
 
-        public void MoveProjectiles(IList<Projectile> projectiles)
+        //public void MoveProjectiles(IList<Projectile> projectiles)
+        //{
+        //    for (int i = 0; i < this.projectilesOnMap.Count; i++)
+        //    {
+        //        this.renderer.SetCursor(this.projectilesOnMap[i].Position.X, this.projectilesOnMap[i].Position.Y);
+        //        this.renderer.Write("White", this.projectilesOnMap[i].ToPrintArray()[0, 0]);
+        //        var position = this.projectilesOnMap[i].Position;
+        //        position.X += 1;
+        //        this.projectilesOnMap[i].Position = position;
+        //        if (this.projectilesOnMap[i].Position.X == width)
+        //        {
+        //            this.projectilesOnMap.Remove(this.projectilesOnMap[i]);
+        //        }
+        //    }
+        //}
+
+        public void CheckShipLives(Starship ship)
         {
-            foreach (var projectile in projectiles)
+            if (ship.Lives == 0)
             {
-                this.renderer.SetCursor(projectile.Position.X, projectile.Position.Y);
-                this.renderer.Write("White", projectile.ToPrintArray()[0,0]);
-                var position = projectile.Position;
-                position.X += 1;
-                projectile.Position = position;
+                this.IsRunning = false;
             }
         }
 	}

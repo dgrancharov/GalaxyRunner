@@ -32,7 +32,6 @@ namespace Galaxy_Runner.EngineNS
         {
              foreach (GameObject go in gameObjects)
              {
-//                 this.Renderer.Clear();
                  ClearObject(go);
                  PrintGameObject(go);
              }
@@ -82,9 +81,9 @@ namespace Galaxy_Runner.EngineNS
             if(gameObject.Position.X != gameObject.OldPosition.X || gameObject.Position.Y != gameObject.OldPosition.Y)
             {
                 this.Renderer.SetCursor(gameObject.OldPosition.X, gameObject.OldPosition.Y);
-                for (int row = 0; row < gameObject.ToPrintArray().GetLength(0); row++)
+                for (int row = 0; row <= gameObject.ToPrintArray().GetLength(0); row++)
                 {
-                    for (int col = 0; col < gameObject.ToPrintArray().GetLength(1); col++)
+                    for (int col = 0; col <= gameObject.ToPrintArray().GetLength(1); col++)
                     {
                         this.Renderer.Write("Black", ' ');
                     }
