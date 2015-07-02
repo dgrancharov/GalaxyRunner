@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="EngineNS\Commands\ClickEventHandler.cs" />
     <Compile Include="EngineNS\Commands\ProcessEventArgs.cs" />
+    <Compile Include="GameObjects\GameObjectColors.cs" />
     <Compile Include="GameObjects\Items\Obstacles\SquareObstacle.cs" />
     <Compile Include="GameObjects\Items\Projectiles\Laser.cs" />
     <Compile Include="GameObjects\Items\Projectiles\Projectile.cs" />

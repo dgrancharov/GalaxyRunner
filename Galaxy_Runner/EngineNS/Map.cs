@@ -28,11 +28,11 @@ namespace Galaxy_Runner.EngineNS
         public int ReducedWidth { get; set; }
         public IRenderer Renderer { get; private set; }
 
-        public void UpdateMap(Starship playerShip, IList<GameObject> gameObjects)
+        public void UpdateMap(IList<GameObject> gameObjects)
         {
              foreach (GameObject go in gameObjects)
              {
-                 ClearObject(go);
+                 ClearObjectTail(go);
                  PrintGameObject(go);
              }
         }
@@ -76,9 +76,26 @@ namespace Galaxy_Runner.EngineNS
             }
         }
 
-        private void ClearObject(GameObject gameObject)
+        public void ClearObject(GameObject gameObject)
         {
             if(gameObject.Position.X != gameObject.OldPosition.X || gameObject.Position.Y != gameObject.OldPosition.Y)
+            {
+                this.Renderer.SetCursor(gameObject.Position.X, gameObject.Position.Y);
+                for (int row = 0; row <= gameObject.ToPrintArray().GetLength(0); row++)
+                {
+                    for (int col = 0; col <= gameObject.ToPrintArray().GetLength(1); col++)
+                    {
+                        this.Renderer.Write("Black", ' ');
+                    }
+                    this.Renderer.WriteLine();
+                    this.Renderer.SetCursor(gameObject.Position.X, gameObject.Position.Y + row + 1);
+                }
+            }
+        }
+
+        public void ClearObjectTail(GameObject gameObject)
+        {
+            if (gameObject.Position.X != gameObject.OldPosition.X || gameObject.Position.Y != gameObject.OldPosition.Y)
             {
                 this.Renderer.SetCursor(gameObject.OldPosition.X, gameObject.OldPosition.Y);
                 for (int row = 0; row <= gameObject.ToPrintArray().GetLength(0); row++)

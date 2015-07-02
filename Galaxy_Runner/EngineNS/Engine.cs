@@ -17,8 +17,8 @@ namespace Galaxy_Runner.EngineNS
 	public class Engine
 	{
 		public const int height = 33;
-		public const int width = 120;
-        public const int reducedWidth = 100;
+		public const int width = 60;
+        public const int reducedWidth = 40;
         public const int obstacleMaxSize = 7;
         
         private bool isPause = false;
@@ -41,6 +41,7 @@ namespace Galaxy_Runner.EngineNS
             this.ObstacleFactory = new ObstacleFactory();
             this.PenaltyFactory = new PenaltyFactory();
             this.BonusFactory = new BonusFactory();
+            this.GameMap = new Map(height, width, reducedWidth, renderer);
             this.Score = 0;
             this.Level = 1;
             this.Iterations = 1;
@@ -53,6 +54,7 @@ namespace Galaxy_Runner.EngineNS
         public ObstacleFactory ObstacleFactory { get; private set; }
         public BonusFactory BonusFactory { get; private set; }
         public PenaltyFactory PenaltyFactory { get; private set; }
+        public Map GameMap { get; private set; }
         public int Score { get; set; }
         public int Level { get; set; }
         public string Difficulty { get; set; }
@@ -94,7 +96,7 @@ namespace Galaxy_Runner.EngineNS
 		{
 			this.IsRunning = true;
 
-			Map gameMap = new Map (height, width, reducedWidth, renderer);
+//			Map gameMap = new Map (height, width, reducedWidth, renderer);
 
 			this.renderer.WriteLine ("White","Welcome to Galaxy Runner!\n\n");
 
@@ -144,7 +146,7 @@ namespace Galaxy_Runner.EngineNS
                             go.UpdatePosition();
                         }
                     }
-                    gameMap.UpdateMap(playerShip, gameObjects);
+                    GameMap.UpdateMap(gameObjects);
                     
                     if (this.Iterations % (width - reducedWidth) == 0)
                     {
@@ -153,7 +155,7 @@ namespace Galaxy_Runner.EngineNS
                     }
 
                     Collision(playerShip, gameObjects);
-                    CheckDestroyedGameObjects(gameObjects);
+                    CheckDestroyedGameObjects();
 
                     this.Score += 3;
                     this.Iterations++;
@@ -297,13 +299,14 @@ namespace Galaxy_Runner.EngineNS
             }
         }
 
-        public void CheckDestroyedGameObjects(IList<GameObject> gameObjects)
+        public void CheckDestroyedGameObjects()
         {
             for (int i = 0; i < this.gameObjects.Count; i++)
             {
                 if (this.gameObjects[i].IsDestroyed)
                 {
-                    gameObjects.Remove(this.gameObjects[i]);
+                    this.GameMap.ClearObject(gameObjects[i]);
+                    this.gameObjects.Remove(this.gameObjects[i]);
                 }
             }
         }
@@ -312,9 +315,9 @@ namespace Galaxy_Runner.EngineNS
         {
             for (int i = 0; i < this.gameObjects.Count; i++)
             {
-                if (gameObjects[i] is Item && this.gameObjects[i].Position.X < 5)
+                if (this.gameObjects[i] is Item && this.gameObjects[i].Position.X < 4)
                 {
-                    gameObjects.Remove(this.gameObjects[i]);
+                    this.gameObjects[i].IsDestroyed = true;
                 }
             }
         }
@@ -328,7 +331,6 @@ namespace Galaxy_Runner.EngineNS
                 this.gameObjects.First(go => go is Starship).Position = new Position(tmpPositionX, tmpPositionY - 1);
                 this.gameObjects.First(go => go is Starship).OldPosition = new Position(tmpPositionX, tmpPositionY);
             }
-
         }
 
         public void MoveShipDown()
@@ -341,25 +343,24 @@ namespace Galaxy_Runner.EngineNS
                 this.gameObjects.First(go => go is Starship).Position = new Position(tmpPositionX, tmpPositionY + 1);
                 this.gameObjects.First(go => go is Starship).OldPosition = new Position(tmpPositionX, tmpPositionY);
             }
-
         }
 
         public void DestroyObstacles()
         {
-            int maxObstacles = this.gameObjects.Where(go => go is Obstacle).Count();
-            int maxProjectiles = this.gameObjects.Where(go => go is Projectile).Count();
+            IList<GameObject> ObstaclesInGameObjects = this.gameObjects.Where(go => go is Obstacle).ToList();
+            IList<GameObject> ProjectilesInGameObjects = this.gameObjects.Where(go => go is Projectile).ToList();
 
-            for (int i = 0; i < maxObstacles; i++)
+
+            for (int i = 0; i < ObstaclesInGameObjects.Count; i++)
             {
-                for (int j = 0; j < maxProjectiles; j++)
+                for (int j = 0; j < ProjectilesInGameObjects.Count; j++)
                 {
-                    for (int y = gameObjects[i].Position.Y; y < gameObjects[i].ToPrintArray().GetLength(0); y++)
+                    for (int y = gameObjects[i].OldPosition.Y; y < gameObjects[i].ToPrintArray().GetLength(0); y++)
                     {
-                        if (this.gameObjects[i].Position.X == this.gameObjects[j].Position.X && this.gameObjects[i].Position.Y == this.gameObjects[j].Position.Y)
+                        if (this.gameObjects[j].Position.X == this.gameObjects[i].OldPosition.X  && this.gameObjects[j].Position.Y == y || this.gameObjects[j].OldPosition.X == this.gameObjects[i].OldPosition.X  && this.gameObjects[j].OldPosition.Y == y)
                         {
-                            this.gameObjects.Remove(this.gameObjects[i]);
-                            this.gameObjects.Remove(this.gameObjects[j]);
-//                            this.projectilesOnMap.Remove(this.projectilesOnMap[j]);
+                            this.gameObjects[i].IsDestroyed = true;
+                            this.gameObjects[j].IsDestroyed = true;
                         }
                     }
                 }
